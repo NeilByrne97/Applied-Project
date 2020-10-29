@@ -1,17 +1,28 @@
+/* Read RFID Tag with RC522 RFID Reader
+ *  Made by miliohm.com
+ */
+ 
+#include <SPI.h>
+#include <MFRC522.h>
 #include <ESP8266WiFi.h>
 
 const char* ssid="Infinitang IV";
 const char* password = "PowPowPow1";
 
-int ledPin = 13;
+constexpr uint8_t RST_PIN = D3;     // Configurable, see typical pin layout above
+constexpr uint8_t SS_PIN = D4;     // Configurable, see typical pin layout above
+
+MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
+MFRC522::MIFARE_Key key;
+
+String tag;
 
 void setup() {
-  
-  pinMode(ledPin,OUTPUT);
-  digitalWrite(ledPin,LOW);
-
   Serial.begin(115200);
-  Serial.println();
+  SPI.begin(); // Init SPI bus
+  rfid.PCD_Init(); // Init MFRC522
+
+
   Serial.print("Wifi connecting to ");
   Serial.println( ssid );
 
@@ -20,12 +31,11 @@ void setup() {
   Serial.println();
   Serial.print("Connecting");
 
-  while( WiFi.status() != WL_CONNECTED ){
+    while( WiFi.status() != WL_CONNECTED ){
       delay(500);
       Serial.print(".");        
   }
 
-  digitalWrite( ledPin , HIGH);
   Serial.println();
 
   Serial.println("Wifi Connected Success!");
@@ -34,7 +44,17 @@ void setup() {
 
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
 
+void loop() {
+  if ( ! rfid.PICC_IsNewCardPresent())
+    return;
+  if (rfid.PICC_ReadCardSerial()) {
+    for (byte i = 0; i < 4; i++) {
+      tag += rfid.uid.uidByte[i];
+    }
+    Serial.println(tag);
+    tag = "";
+    rfid.PICC_HaltA();
+    rfid.PCD_StopCrypto1();
+  }
 }
