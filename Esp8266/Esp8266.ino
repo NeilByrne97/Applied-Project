@@ -22,7 +22,7 @@ void setup() {
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522
 
-
+  // Wifi setup
   Serial.print("Wifi connecting to ");
   Serial.println( ssid );
 
@@ -37,7 +37,7 @@ void setup() {
   }
 
   Serial.println();
-
+  // Print wifi
   Serial.println("Wifi Connected Success!");
   Serial.print("NodeMCU IP Address : ");
   Serial.println(WiFi.localIP() );
@@ -46,6 +46,7 @@ void setup() {
 
 
 void loop() {
+  // Read in nfc to serial monitor
   if ( ! rfid.PICC_IsNewCardPresent())
     return;
   if (rfid.PICC_ReadCardSerial()) {
