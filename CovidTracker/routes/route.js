@@ -28,8 +28,16 @@ router.post('/contact', (req, res, next)=>{
     });
 });
 
-router.delete('/contact/:id', (req, res, next)=>{
-
+router.delete('/contact/:id',(req, res, next)=>{
+    Contact.remove({_id: req.params.id}, function(err, result){
+        if(err){
+            res.json(err);
+        }
+        else{
+            res.json(result);
+        }
+       
+    });
 });
 
 
