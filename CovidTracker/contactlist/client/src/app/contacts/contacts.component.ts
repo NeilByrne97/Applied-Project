@@ -6,8 +6,10 @@ import { Contact} from '../contact';
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  styleUrls: ['./contacts.component.css'],
+  providers: [ContactService]
 })
+
 export class ContactsComponent implements OnInit {
   contacts: Contact[];
   contact: Contact;
