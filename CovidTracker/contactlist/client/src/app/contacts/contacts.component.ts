@@ -29,6 +29,10 @@ export class ContactsComponent implements OnInit {
     this.contactService.addContact(newContact)
     .subscribe(contact =>{
       this.contacts.push(contact);
+
+      this.contactService.getContacts() // Refresh when new contact added
+      .subscribe( contacts =>
+        this.contacts = contacts);
     });
   }
 
@@ -47,7 +51,7 @@ export class ContactsComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.contactService.getContacts()
     .subscribe( contacts =>
       this.contacts = contacts);

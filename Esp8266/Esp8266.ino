@@ -1,7 +1,3 @@
-/* Read RFID Tag with RC522 RFID Reader
- *  Made by miliohm.com
- */
- 
 #include <SPI.h>
 #include <MFRC522.h>
 #include <ESP8266WiFi.h>

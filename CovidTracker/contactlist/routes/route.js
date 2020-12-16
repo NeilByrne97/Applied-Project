@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const Contact = require('../moduls/contacts');
+const Contact = require('../models/contacts');
 
 // Retrieving contacts
 router.get('/contacts', (req, res, next)=>{
-    res.send('Retrieving the contact list');
-    res.json(contacts);
+    Contact.find(function(err, contacts){
+        res.json(contacts);
+    })    
 });
 
 // Add contact
@@ -16,7 +17,7 @@ router.post('/contact', (req, res, next)=>{
         last_name: req.body.last_name,
         phone: req.body.phone
 
-    })
+    });
 
     newContact.save((err, contact)=>{
         if(err){
