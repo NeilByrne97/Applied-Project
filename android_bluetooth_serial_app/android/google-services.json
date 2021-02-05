@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "364532862797",
+    "project_id": "flutterfirebase-2dc4b",
+    "storage_bucket": "flutterfirebase-2dc4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364532862797:android:6efbd94c052cc758ca3104",
+        "android_client_info": {
+          "package_name": "com.example.android_bluetooth_serial_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364532862797-avu7lh4psu0cqmbpgmvn4c3cqrrh3u7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2KUWAMqRBkxvdpcNdwrqV5U4DjYo3ARg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364532862797-avu7lh4psu0cqmbpgmvn4c3cqrrh3u7e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
