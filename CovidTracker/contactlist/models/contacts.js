@@ -13,7 +13,12 @@ const ContactSchema = mongoose.Schema({
     phone:{
         type: String,
         required: true
+    },
+    email:{
+        type: String,
+        required: true
     }
+
 });
 
 const Contact = module.exports = mongoose.model('Contact', ContactSchema);

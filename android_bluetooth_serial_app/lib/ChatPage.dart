@@ -238,7 +238,7 @@ class _ChatPage extends State<ChatPage> {
                   child: IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: isConnected
-                          ? () => _sendMessage(firstName + "\n" + lastName + "\n" + phoneNumber + "\n" + email)
+                          ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
                           : null),
                 ),
               ],
