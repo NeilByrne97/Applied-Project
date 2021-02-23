@@ -21,14 +21,20 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
+  String firstName;
   static final clientID = 0;
   BluetoothConnection connection;
+
+  getFirstName(firstName){
+    this.firstName = firstName;
+  }
+
 
   List<_Message> messages = List<_Message>();
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-      new TextEditingController();
+  new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -89,7 +95,7 @@ class _ChatPage extends State<ChatPage> {
         children: <Widget>[
           Container(
             child: Text(
-                (text) {
+                    (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
                 style: TextStyle(color: Colors.white)),
@@ -98,7 +104,7 @@ class _ChatPage extends State<ChatPage> {
             width: 222.0,
             decoration: BoxDecoration(
                 color:
-                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
+                _message.whom == clientID ? Colors.blueAccent : Colors.grey,
                 borderRadius: BorderRadius.circular(7.0)),
           ),
         ],
@@ -113,8 +119,8 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to ' + widget.server.name + '...')
               : isConnected
-                  ? Text('Live chat with ' + widget.server.name)
-                  : Text('Chat log with ' + widget.server.name))),
+              ? Text('Live chat with ' + widget.server.name)
+              : Text('Chat log with ' + widget.server.name))),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -127,6 +133,22 @@ class _ChatPage extends State<ChatPage> {
             Row(
               children: <Widget>[
                 Flexible(
+                  child: TextFormField(         // FirstName
+                    decoration: InputDecoration(
+                        labelText: "First Name",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue,
+                                width: 2.0
+                            )
+                        )
+                    ),
+                    onChanged: (String firstName){
+                      getFirstName(firstName);
+                    },
+                  ),
+                ),
+                Flexible(
                   child: Container(
                     margin: const EdgeInsets.only(left: 16.0),
                     child: TextField(
@@ -136,8 +158,8 @@ class _ChatPage extends State<ChatPage> {
                         hintText: isConnecting
                             ? 'Wait until connected...'
                             : isConnected
-                                ? 'Type your message...'
-                                : 'Chat got disconnected',
+                            ? 'Type your message...'
+                            : 'Chat got disconnected',
                         hintStyle: const TextStyle(color: Colors.grey),
                       ),
                       enabled: isConnected,
@@ -149,7 +171,7 @@ class _ChatPage extends State<ChatPage> {
                   child: IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: isConnected
-                          ? () => _sendMessage(textEditingController.text)
+                          ? () => _sendMessage(firstName)
                           : null),
                 ),
               ],
@@ -195,7 +217,7 @@ class _ChatPage extends State<ChatPage> {
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                    0, _messageBuffer.length - backspacesCounter)
+                0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -204,7 +226,7 @@ class _ChatPage extends State<ChatPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-              0, _messageBuffer.length - backspacesCounter)
+          0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }

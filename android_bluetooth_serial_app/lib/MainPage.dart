@@ -127,13 +127,13 @@ class _MainPage extends State<MainPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(         // FirstName
                 decoration: InputDecoration(
-                  labelText: "First Name",
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue,
-                    width: 2.0
+                    labelText: "First Name",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue,
+                            width: 2.0
+                        )
                     )
-                  )
                 ),
                 onChanged: (String firstName){
                   getFirstName(firstName);
@@ -222,7 +222,7 @@ class _MainPage extends State<MainPage> {
             ),
             RaisedButton(
               child: Text("Update"),
-             // onPressed: _update,
+              // onPressed: _update,
             ),
             RaisedButton(
               child: Text("Delete"),
@@ -237,7 +237,7 @@ class _MainPage extends State<MainPage> {
                 child: const Text('Connect to paired device to chat'),
                 onPressed: () async {
                   final BluetoothDevice selectedDevice =
-                      await Navigator.of(context).push(
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
                         return SelectBondedDevicePage(checkAvailability: false);
@@ -272,9 +272,9 @@ class _MainPage extends State<MainPage> {
   }
 
   Future<void> _startBackgroundTask(
-    BuildContext context,
-    BluetoothDevice server,
-  ) async {
+      BuildContext context,
+      BluetoothDevice server,
+      ) async {
     try {
       _collectingTask = await BackgroundCollectingTask.connect(server);
       await _collectingTask.start();
