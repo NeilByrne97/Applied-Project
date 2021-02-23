@@ -123,77 +123,8 @@ class _MainPage extends State<MainPage> {
       body: Container(
         child: ListView(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(         // FirstName
-                decoration: InputDecoration(
-                    labelText: "First Name",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue,
-                            width: 2.0
-                        )
-                    )
-                ),
-                onChanged: (String firstName){
-                  getFirstName(firstName);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: TextFormField(         // LastName
-                decoration: InputDecoration(
-                    labelText: "Last Name",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue,
-                            width: 2.0
-                        )
-                    )
-                ),
-                onChanged: (String lastName){
-                  getLastName(lastName);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: TextFormField(         // PhoneNumber
-                decoration: InputDecoration(
-                    labelText: "Phone Number",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue,
-                            width: 2.0
-                        )
-                    )
-                ),
-                onChanged: (String phoneNumber){
-                  getPhoneNumber(phoneNumber);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: TextFormField(         // Email
-                decoration: InputDecoration(
-                    labelText: "Email",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue,
-                            width: 2.0
-                        )
-                    )
-                ),
-                onChanged: (String email){
-                  getEmail(email);
-                },
-              ),
-            ),
-
             Divider(),
-            ListTile(title: const Text('General')),
+           // ListTile(title: const Text('General')),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
@@ -213,11 +144,11 @@ class _MainPage extends State<MainPage> {
               },
             ),
             Divider(),
-            ListTile(title: const Text('Devices discovery and connection')),
+            ListTile(title: const Text('Bluetooth devices')),
 
             ListTile(
               title: RaisedButton(
-                child: const Text('Connect to paired device to chat'),
+                child: const Text('Connect and Send Contact Information'),
                 onPressed: () async {
                   final BluetoothDevice selectedDevice =
                   await Navigator.of(context).push(

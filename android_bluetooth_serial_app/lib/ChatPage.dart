@@ -131,7 +131,7 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to ' + widget.server.name + '...')
               : isConnected
-              ? Text('Live chat with ' + widget.server.name)
+              ? Text('Connected with ' + widget.server.name)
               : Text('Chat log with ' + widget.server.name))),
       body: SafeArea(
         child: Column(
@@ -214,7 +214,7 @@ class _ChatPage extends State<ChatPage> {
                     },
                   ),
                 ),
-                Flexible(
+              /*  Flexible(
                   flex: 2,
                   child: Container(
                     margin: const EdgeInsets.only(left: 16.0),
@@ -232,7 +232,7 @@ class _ChatPage extends State<ChatPage> {
                       enabled: isConnected,
                     ),
                   ),
-                ),
+                ),*/  // Type message
                 Container(
                   margin: const EdgeInsets.all(8.0),
                   child: IconButton(
