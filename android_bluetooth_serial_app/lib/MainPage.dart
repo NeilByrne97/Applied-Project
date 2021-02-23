@@ -212,23 +212,6 @@ class _MainPage extends State<MainPage> {
                 });
               },
             ),
-            RaisedButton(
-              child: Text("Create"),
-              //onPressed: _create,
-            ),
-            RaisedButton(
-              child: Text("Read"),
-              //onPressed: _read,
-            ),
-            RaisedButton(
-              child: Text("Update"),
-              // onPressed: _update,
-            ),
-            RaisedButton(
-              child: Text("Delete"),
-              //onPressed: _delete,
-            ),
-
             Divider(),
             ListTile(title: const Text('Devices discovery and connection')),
 

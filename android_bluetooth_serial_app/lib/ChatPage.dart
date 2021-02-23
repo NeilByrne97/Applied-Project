@@ -21,12 +21,24 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
-  String firstName;
+  String firstName, lastName, phoneNumber, email;
   static final clientID = 0;
   BluetoothConnection connection;
 
   getFirstName(firstName){
     this.firstName = firstName;
+  }
+
+  getLastName(lastName){
+    this.lastName = lastName;
+  }
+
+  getPhoneNumber(phoneNumber){
+    this.phoneNumber = phoneNumber;
+  }
+
+  getEmail(email){
+    this.email = email;
   }
 
 
@@ -133,6 +145,7 @@ class _ChatPage extends State<ChatPage> {
             Row(
               children: <Widget>[
                 Flexible(
+                  flex: 2,
                   child: TextFormField(         // FirstName
                     decoration: InputDecoration(
                         labelText: "First Name",
@@ -148,7 +161,61 @@ class _ChatPage extends State<ChatPage> {
                     },
                   ),
                 ),
+                ],
+            ),
                 Flexible(
+                  flex: 2,
+                  child: TextFormField(         // LastName
+                    decoration: InputDecoration(
+                        labelText: "Last Name",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue,
+                                width: 2.0
+                            )
+                        )
+                    ),
+                    onChanged: (String lastName){
+                      getLastName(lastName);
+                    },
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: TextFormField(         // PhoneNumber
+                    decoration: InputDecoration(
+                        labelText: "Phone Number",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue,
+                                width: 2.0
+                            )
+                        )
+                    ),
+                    onChanged: (String phoneNumber){
+                      getPhoneNumber(phoneNumber);
+                    },
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: TextFormField(         // Email
+                    decoration: InputDecoration(
+                        labelText: "Email",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue,
+                                width: 2.0
+                            )
+                        )
+                    ),
+                    onChanged: (String email){
+                      getEmail(email);
+                    },
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
                   child: Container(
                     margin: const EdgeInsets.only(left: 16.0),
                     child: TextField(
@@ -171,13 +238,11 @@ class _ChatPage extends State<ChatPage> {
                   child: IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: isConnected
-                          ? () => _sendMessage(firstName)
+                          ? () => _sendMessage(firstName + "\n" + lastName + "\n" + phoneNumber + "\n" + email)
                           : null),
                 ),
               ],
             )
-          ],
-        ),
       ),
     );
   }
