@@ -52,4 +52,17 @@ void loop() {
 
 void convertString(String infoString){
   Serial.println("String arrived, it is " + infoString);
+  
+  //char splitString[] = infoString;
+
+  char splitString [1024];
+  strcpy(splitString, infoString.c_str());
+  
+  char *token = strtok(splitString, "-");
+
+  while(token != NULL){
+    printf("%s\n", token);
+    token = strtok(NULL, "-");
+    
+  }
 }
