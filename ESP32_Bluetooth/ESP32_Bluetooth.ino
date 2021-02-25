@@ -110,14 +110,14 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
    // client.begin("https://jsonplaceholder.typicode.com/posts");
     client.addHeader("Content-Type", "application/json");
 
-    const size_t CAPACITY = JSON_OBJECT_SIZE(4);
+    const size_t CAPACITY = JSON_OBJECT_SIZE(8);
     StaticJsonDocument<CAPACITY> doc;
 
     JsonObject object = doc.to<JsonObject>();
-    object["first_name"] = "firstName";
-    object["last_name"] = "lastName";
-    object["phone"] = "phone";
-    object["email"] = "email";
+    object["first_name"] = firstName;
+    object["last_name"] = lastName;
+    object["phone"] = phoneNumber;
+    object["email"] = email;
     
     serializeJson(doc, jsonOutput);
     Serial.println("");

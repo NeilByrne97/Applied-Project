@@ -18,10 +18,9 @@ router.post('/contact', (req, res, next)=>{
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         phone: req.body.phone,
-        email: req.body.email
+        email: req.body.email,
 
     });
-
     newContact.save((err, contact)=>{
         if(err){
             res.json({msg: 'Failed to add contact'});
