@@ -44,18 +44,50 @@ class _ChatPage extends State<ChatPage> {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+
   void _create() async {
+    String docName =lastName + " " + firstName;
+
     try {
-      await firestore.collection('Contacts').doc('Piiiiiints').set({
-        'firstName': 'Pints',
-        'lastName': 'With',
-        'email': 'The',
-        'phoneNumber': 'Lads',
+      await firestore.collection('Contacts').doc(docName).set({
+        'firstName': firstName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'email': email,
       });
     } catch (e) {
       print(e);
     }
   }
+
+  void _read() async {
+    DocumentSnapshot documentSnapshot;
+    try {
+      documentSnapshot = await firestore.collection('Contacts').doc(lastName).get();
+      print(documentSnapshot.data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _update() async {
+    try {
+      firestore.collection('users').doc('testUser').update({
+        'firstName': 'Alan',
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _delete() async {
+    try {
+      firestore.collection('users').doc('testUser').delete();
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   List<_Message> messages = List<_Message>();
   String _messageBuffer = '';
