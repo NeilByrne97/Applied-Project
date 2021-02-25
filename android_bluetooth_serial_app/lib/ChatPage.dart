@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
@@ -41,6 +42,20 @@ class _ChatPage extends State<ChatPage> {
     this.email = email;
   }
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  void _create() async {
+    try {
+      await firestore.collection('Contacts').doc('Piiiiiints').set({
+        'firstName': 'Pints',
+        'lastName': 'With',
+        'email': 'The',
+        'phoneNumber': 'Lads',
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   List<_Message> messages = List<_Message>();
   String _messageBuffer = '';
@@ -241,6 +256,13 @@ class _ChatPage extends State<ChatPage> {
                           ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
                           : null),
                 ),
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              child: IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: _create,
+            ),
+            ),
               ],
             )
       ),

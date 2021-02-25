@@ -37,28 +37,6 @@ class _MainPage extends State<MainPage> {
 
   bool _autoAcceptPairingRequests = false;
 
-  getFirstName(firstName){
-    this.firstName = firstName;
-  }
-
-  getLastName(lastName){
-    this.lastName = lastName;
-  }
-
-  getPhoneNumber(phoneNumber){
-    this.phoneNumber = phoneNumber;
-  }
-
-  getEmail(email){
-    this.email = email;
-  }
-
-  //FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-
-
-
-
   @override
   void initState() {
     super.initState();
