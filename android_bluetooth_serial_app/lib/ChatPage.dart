@@ -61,9 +61,10 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void _read() async {
+    String docName =lastName + " " + firstName;
     DocumentSnapshot documentSnapshot;
     try {
-      documentSnapshot = await firestore.collection('Contacts').doc(lastName).get();
+      documentSnapshot = await firestore.collection('Contacts').doc(docName).get();
       print(documentSnapshot.data);
     } catch (e) {
       print(e);
@@ -181,86 +182,86 @@ class _ChatPage extends State<ChatPage> {
               ? Text('Connected with ' + widget.server.name)
               : Text('Chat log with ' + widget.server.name))),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              child: ListView(
-                  padding: const EdgeInsets.all(12.0),
-                  controller: listScrollController,
-                  children: list),
-            ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(         // FirstName
-                    decoration: InputDecoration(
-                        labelText: "First Name",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue,
-                                width: 2.0
-                            )
-                        )
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                child: ListView(
+                    padding: const EdgeInsets.all(12.0),
+                    controller: listScrollController,
+                    children: list),
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: TextFormField(         // FirstName
+                      decoration: InputDecoration(
+                          labelText: "First Name",
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue,
+                                  width: 2.0
+                              )
+                          )
+                      ),
+                      onChanged: (String firstName){
+                        getFirstName(firstName);
+                      },
                     ),
-                    onChanged: (String firstName){
-                      getFirstName(firstName);
-                    },
                   ),
-                ),
                 ],
-            ),
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(         // LastName
-                    decoration: InputDecoration(
-                        labelText: "Last Name",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue,
-                                width: 2.0
-                            )
-                        )
-                    ),
-                    onChanged: (String lastName){
-                      getLastName(lastName);
-                    },
+              ),
+              Flexible(
+                flex: 2,
+                child: TextFormField(         // LastName
+                  decoration: InputDecoration(
+                      labelText: "Last Name",
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue,
+                              width: 2.0
+                          )
+                      )
                   ),
+                  onChanged: (String lastName){
+                    getLastName(lastName);
+                  },
                 ),
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(         // PhoneNumber
-                    decoration: InputDecoration(
-                        labelText: "Phone Number",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue,
-                                width: 2.0
-                            )
-                        )
-                    ),
-                    onChanged: (String phoneNumber){
-                      getPhoneNumber(phoneNumber);
-                    },
+              ),
+              Flexible(
+                flex: 2,
+                child: TextFormField(         // PhoneNumber
+                  decoration: InputDecoration(
+                      labelText: "Phone Number",
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue,
+                              width: 2.0
+                          )
+                      )
                   ),
+                  onChanged: (String phoneNumber){
+                    getPhoneNumber(phoneNumber);
+                  },
                 ),
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(         // Email
-                    decoration: InputDecoration(
-                        labelText: "Email",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue,
-                                width: 2.0
-                            )
-                        )
-                    ),
-                    onChanged: (String email){
-                      getEmail(email);
-                    },
+              ),
+              Flexible(
+                flex: 2,
+                child: TextFormField(         // Email
+                  decoration: InputDecoration(
+                      labelText: "Email",
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue,
+                              width: 2.0
+                          )
+                      )
                   ),
+                  onChanged: (String email){
+                    getEmail(email);
+                  },
                 ),
+              ),
               /*  Flexible(
                   flex: 2,
                   child: Container(
@@ -280,24 +281,24 @@ class _ChatPage extends State<ChatPage> {
                     ),
                   ),
                 ),*/  // Type message
-                Container(
-                  margin: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: isConnected
-                          ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
-                          : null),
-                ),
-            Container(
-              margin: const EdgeInsets.all(8.0),
-              child: IconButton(
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                child: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: isConnected
+                        ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
+                        : null),
+              ),
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                child: IconButton(
                   icon: const Icon(Icons.send),
                   onPressed: _create,
-            ),
-            ),
-              ],
-            )
-      ),
+                ),
+              ),
+            ],
+          )
+    ),
     );
   }
 
