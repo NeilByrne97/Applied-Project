@@ -39,14 +39,6 @@ void setup() {
   // Print BLUETOOTH
   SerialBT.begin("ESP32"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
-
-
-  String firstName = "firstName";
-  String lastName = "lastName";
-  String phoneNumber = "phone";
-  String email = "email";
-  sendJSON(firstName, lastName, phoneNumber, email);
-  
 }
 
 void loop() {

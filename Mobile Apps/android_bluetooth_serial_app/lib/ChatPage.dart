@@ -61,7 +61,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void _read() async {
-    String docName =lastName + " " + firstName;
+    String docName ="Neil Byrne";
     DocumentSnapshot documentSnapshot;
     try {
       documentSnapshot = await firestore.collection('Contacts').doc(docName).get();
@@ -262,6 +262,14 @@ class _ChatPage extends State<ChatPage> {
                   },
                 ),
               ),
+              Flexible(
+                flex: 2,
+                child: ListView.builder(
+                    itemBuilder: (context, index)){
+
+                  },
+
+              ),
               /*  Flexible(
                   flex: 2,
                   child: Container(
@@ -296,10 +304,26 @@ class _ChatPage extends State<ChatPage> {
                   onPressed: _create,
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: getIt,
+                ),
+              ),
             ],
           )
     ),
     );
+  }
+
+  void getIt(){
+    firestore.collection("Contacts").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print(result.data());
+        print("break");
+      });
+    });
   }
 
   void _onDataReceived(Uint8List data) {

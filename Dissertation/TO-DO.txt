@@ -1,0 +1,74 @@
+======DISSERTATION TOPICS AND TO-DO LIST======
+Postman
+	Debugging
+	Aided with Android debugging
+Esp32 bugs
+	What is it? How it work?
+	Explain how all code works
+	Move from ESP8266
+	Power cable
+	Memory paritions
+	LCD Screen
+3D printer
+	Type of printer
+	Designing it
+	Battery pack
+	Failed prints
+	Different IDEs
+	Pics during + after print
+NFC
+	Schematic and pics
+	Why it wouldn't work
+	What it could send
+	How NFC works
+	Differnce between NFC + RFID
+	NFC for computer - possible to link to Angular
+Flutter
+	Package from dev.pub used for Bluetooth - Make comment on it's classes
+	iOS, android and recently web - Flutter 2
+	Google
+	Up and coming
+	Firebase
+		How it works
+		Google cloud credits - thanks Ian
+	Quick sketch of future possibilities 
+Angular on mobile
+	NativeJS planned
+	When found problem with NFC reader
+Java
+	Pics of app
+	How it worked
+	Why the switch
+Kotlin
+	Pics of app
+	How it worked 
+	Why the switch
+Gannt chart
+	SCRUM
+	Use this template for SCRUM board
+	OnTime software
+	Planned + what happened
+	Why this happend
+Methodologies
+	What I did, how it changed
+	What I learned for again
+MEAN
+	Mongo
+		Pics of terminal
+		Architecture 
+	Express
+		Post URL
+	Angular
+		Architecture pics
+		Sort data by date
+		Can sort by all 
+	NodeJS
+		npm
+
+
+
+
+
+	
+	
+	
