@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class ChatPage extends StatefulWidget {
@@ -174,6 +175,21 @@ class _ChatPage extends State<ChatPage> {
       );
     }).toList();
 
+    Widget buildButton(IconData icon, String buttonTitle){
+      final Color tintColor = Colors.blue;
+      return new Column(
+        children: <Widget>[
+          new Icon(icon, color: tintColor),
+          new Container(
+            margin: const EdgeInsets.only(top:5.0),
+            child: new Text(buttonTitle, style: new TextStyle(fontSize: 16.0,
+            fontWeight: FontWeight.w600),),
+          )
+        ],
+      );
+    }
+
+
     return Scaffold(
       appBar: AppBar(
           title: (isConnecting
@@ -193,7 +209,7 @@ class _ChatPage extends State<ChatPage> {
               Row(
                 children: <Widget>[
                   Flexible(
-                    flex: 2,
+                    flex: 6,
                     child: TextFormField(         // FirstName
                       decoration: InputDecoration(
                           labelText: "First Name",
@@ -212,7 +228,7 @@ class _ChatPage extends State<ChatPage> {
                 ],
               ),
               Flexible(
-                flex: 2,
+                flex: 6,
                 child: TextFormField(         // LastName
                   decoration: InputDecoration(
                       labelText: "Last Name",
@@ -229,7 +245,7 @@ class _ChatPage extends State<ChatPage> {
                 ),
               ),
               Flexible(
-                flex: 2,
+                flex: 6,
                 child: TextFormField(         // PhoneNumber
                   decoration: InputDecoration(
                       labelText: "Phone Number",
@@ -246,7 +262,7 @@ class _ChatPage extends State<ChatPage> {
                 ),
               ),
               Flexible(
-                flex: 2,
+                flex: 6,
                 child: TextFormField(         // Email
                   decoration: InputDecoration(
                       labelText: "Email",
@@ -261,14 +277,6 @@ class _ChatPage extends State<ChatPage> {
                     getEmail(email);
                   },
                 ),
-              ),
-              Flexible(
-                flex: 2,
-                child: ListView.builder(
-                    itemBuilder: (context, index)){
-
-                  },
-
               ),
               /*  Flexible(
                   flex: 2,
@@ -289,27 +297,70 @@ class _ChatPage extends State<ChatPage> {
                     ),
                   ),
                 ),*/  // Type message
-              Container(
-                margin: const EdgeInsets.all(8.0),
+              Flexible(
+                flex: 6,
                 child: IconButton(
                     icon: const Icon(Icons.send),
+                    color: Colors.blue,
+                    iconSize: 50,
                     onPressed: isConnected
                         ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
                         : null),
               ),
-              Container(
-                margin: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  icon: const Icon(Icons.send),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                 IconButton(
+                  color: Colors.blue,
+                  iconSize: 50,
+                  icon: const Icon(Icons.update),
+                  onPressed: _update,
+                ),
+                ],
+              ),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  color: Colors.blue,
+                  iconSize: 50,
+                  icon: const Icon(Icons.save),
                   onPressed: _create,
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(8.0),
+              ]),
+              Flexible(
+                flex: 6,
                 child: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: getIt,
+                  color: Colors.blue,
+                  iconSize: 50,
+                  icon: const Icon(Icons.update),
+                  onPressed: _update,
                 ),
+              ),
+              Flexible(
+                child: IconButton(
+                  color: Colors.blue,
+                  iconSize: 50,
+                  icon: const Icon(Icons.delete),
+                  onPressed: _delete,
+                ),
+              ),
+              Flexible(
+                flex: 24,
+                  child: ListView.builder(
+                    itemBuilder: (context, index){
+                      return Card(
+                        child: Column(
+                          children:<Widget> [
+                            Text("First Name"),
+                            Text("Last Name"),
+                            Text("Phone Number"),
+                            Text("Email"),
+                          ],
+                        ),
+                      );
+                    },
+                  )
               ),
             ],
           )
