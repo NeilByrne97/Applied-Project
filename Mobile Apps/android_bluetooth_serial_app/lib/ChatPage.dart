@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
+import 'dart:core';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,7 @@ class _ChatPage extends State<ChatPage> {
         'phoneNumber': phoneNumber,
         'email': email,
       });
+      getIt();   // Update the list displayed
     } catch (e) {
       print(e);
     }
@@ -77,6 +80,7 @@ class _ChatPage extends State<ChatPage> {
       firestore.collection('users').doc('testUser').update({
         'firstName': 'Alan',
       });
+      getIt();   // Update the list displayed
     } catch (e) {
       print(e);
     }
@@ -85,6 +89,7 @@ class _ChatPage extends State<ChatPage> {
   void _delete() async {
     try {
       firestore.collection('users').doc('testUser').delete();
+      getIt();   // Update the list displayed
     } catch (e) {
       print(e);
     }
@@ -319,6 +324,7 @@ class _ChatPage extends State<ChatPage> {
                 flex: 24,
                   child: ListView.builder(
                     itemBuilder: (context, index){
+                      getIt();
                       return Card(
                         child: Column(
                           children:<Widget> [
@@ -421,4 +427,24 @@ class _ChatPage extends State<ChatPage> {
       }
     }
   }
+}
+
+class UserDetails{
+  String firstName;
+  String lastName;
+  String phoneNumber;
+  String email;
+
+  UserDetails({
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.email,
+  });
+
+  UserDetails.fromJson(Map<String, dynamic> json){
+    firstName = json['firstName'];
+  }
+
+
 }
