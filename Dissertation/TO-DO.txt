@@ -24,6 +24,8 @@ NFC
 	Differnce between NFC + RFID
 	NFC for computer - possible to link to Angular
 Flutter
+	Flutter 2
+	Dart
 	Package from dev.pub used for Bluetooth - Make comment on it's classes
 	iOS, android and recently web - Flutter 2
 	Google
@@ -32,6 +34,7 @@ Flutter
 		How it works
 		Google cloud credits - thanks Ian
 	Quick sketch of future possibilities 
+		Ref https://www.youtube.com/watch?v=1ukSR1GRtMU
 Angular on mobile
 	NativeJS planned
 	When found problem with NFC reader
@@ -65,9 +68,16 @@ MEAN
 	NodeJS
 		npm
 
-
-
-
+IDEs
+	Android Studio
+		Emulators
+		pubspec
+	Visual Studio Code
+	Arduino
+		Bluetooth Library
+		Com4
+	cmd
+	
 
 	
 	

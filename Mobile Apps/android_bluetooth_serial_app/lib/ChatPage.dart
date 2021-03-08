@@ -175,21 +175,6 @@ class _ChatPage extends State<ChatPage> {
       );
     }).toList();
 
-    Widget buildButton(IconData icon, String buttonTitle){
-      final Color tintColor = Colors.blue;
-      return new Column(
-        children: <Widget>[
-          new Icon(icon, color: tintColor),
-          new Container(
-            margin: const EdgeInsets.only(top:5.0),
-            child: new Text(buttonTitle, style: new TextStyle(fontSize: 16.0,
-            fontWeight: FontWeight.w600),),
-          )
-        ],
-      );
-    }
-
-
     return Scaffold(
       appBar: AppBar(
           title: (isConnecting
@@ -200,19 +185,19 @@ class _ChatPage extends State<ChatPage> {
       body: SafeArea(
           child: Column(
             children: <Widget>[
-              Flexible(
+          /*    Flexible( // Display sent messages
                 child: ListView(
                     padding: const EdgeInsets.all(12.0),
                     controller: listScrollController,
                     children: list),
               ),
-              Row(
+              */Row(
                 children: <Widget>[
                   Flexible(
                     flex: 6,
                     child: TextFormField(         // FirstName
                       decoration: InputDecoration(
-                          labelText: "First Name",
+                          labelText: "  First Name",
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue,
@@ -231,7 +216,7 @@ class _ChatPage extends State<ChatPage> {
                 flex: 6,
                 child: TextFormField(         // LastName
                   decoration: InputDecoration(
-                      labelText: "Last Name",
+                      labelText: "  Last Name",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue,
@@ -248,7 +233,7 @@ class _ChatPage extends State<ChatPage> {
                 flex: 6,
                 child: TextFormField(         // PhoneNumber
                   decoration: InputDecoration(
-                      labelText: "Phone Number",
+                      labelText: "  Phone Number",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue,
@@ -265,7 +250,7 @@ class _ChatPage extends State<ChatPage> {
                 flex: 6,
                 child: TextFormField(         // Email
                   decoration: InputDecoration(
-                      labelText: "Email",
+                      labelText: "  Email",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue,
@@ -297,54 +282,39 @@ class _ChatPage extends State<ChatPage> {
                     ),
                   ),
                 ),*/  // Type message
-              Flexible(
-                flex: 6,
-                child: IconButton(
-                    icon: const Icon(Icons.send),
-                    color: Colors.blue,
-                    iconSize: 50,
-                    onPressed: isConnected
-                        ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
-                        : null),
-              ),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                 IconButton(
+            Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+                IconButton(
+                  icon: const Icon(Icons.send),
                   color: Colors.blue,
                   iconSize: 50,
-                  icon: const Icon(Icons.update),
-                  onPressed: _update,
-                ),
-                ],
-              ),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                  onPressed: isConnected
+                      ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
+                        : null),
                 IconButton(
                   color: Colors.blue,
                   iconSize: 50,
                   icon: const Icon(Icons.save),
                   onPressed: _create,
-                ),
-              ]),
-              Flexible(
-                flex: 6,
-                child: IconButton(
-                  color: Colors.blue,
-                  iconSize: 50,
-                  icon: const Icon(Icons.update),
-                  onPressed: _update,
-                ),
+              )
+            ]),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                color: Colors.blue,
+                iconSize: 50,
+                icon: const Icon(Icons.update),
+                onPressed: _update,
               ),
-              Flexible(
-                child: IconButton(
+                  IconButton(
                   color: Colors.blue,
                   iconSize: 50,
                   icon: const Icon(Icons.delete),
                   onPressed: _delete,
                 ),
-              ),
+              ]),
               Flexible(
                 flex: 24,
                   child: ListView.builder(
