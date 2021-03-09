@@ -1,4 +1,7 @@
 ======DISSERTATION TOPICS AND TO-DO LIST======
+Latex
+	Doing it in college
+	Why I picked it
 Postman
 	Debugging
 	Aided with Android debugging

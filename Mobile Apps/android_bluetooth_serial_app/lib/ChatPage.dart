@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:core';
 import 'dart:typed_data';
+import 'package:androidbluetoothserialapp/FirebaseContactDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,7 +48,22 @@ class _ChatPage extends State<ChatPage> {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  List<FirebaseContactDetails> _details = List<FirebaseContactDetails>();
+  Future fetchDetails() async{
+    firestore.collection("Contacts").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print(result.data());
+        String jsonString = result.data().toString();
+        print("JSON string is " + jsonString);
+        var details = List<FirebaseContactDetails>();
+        var detailsJSON = json.decode(jsonString);
 
+        for(var detailJSON in detailsJSON) {
+          details.add(FirebaseContactDetails.fromJson(detailJSON));
+        }
+      });
+    });
+  }
   void _create() async {
     String docName =lastName + " " + firstName;
 
@@ -156,6 +172,12 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    fetchDetails().then((value){
+    setState(() {
+      _details.addAll(value);
+      });
+    });
+
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -328,14 +350,16 @@ class _ChatPage extends State<ChatPage> {
                       return Card(
                         child: Column(
                           children:<Widget> [
-                            Text("First Name"),
-                            Text("Last Name"),
-                            Text("Phone Number"),
-                            Text("Email"),
+                            Text("Still here yes"),
+                            Text(_details[index].firstName),
+                            Text(_details[index].lastName),
+                            Text(_details[index].phoneNumber),
+                            Text(_details[index].email),
                           ],
                         ),
                       );
                     },
+                    itemCount: _details.length,
                   )
               ),
             ],
@@ -348,7 +372,9 @@ class _ChatPage extends State<ChatPage> {
     firestore.collection("Contacts").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
+        String jsonString = result.data().toString();
         print("break");
+        //UserDetails userDetails = UserDetails.fromJson(jsonDecode(jsonString));
       });
     });
   }
@@ -427,24 +453,4 @@ class _ChatPage extends State<ChatPage> {
       }
     }
   }
-}
-
-class UserDetails{
-  String firstName;
-  String lastName;
-  String phoneNumber;
-  String email;
-
-  UserDetails({
-    this.firstName,
-    this.lastName,
-    this.phoneNumber,
-    this.email,
-  });
-
-  UserDetails.fromJson(Map<String, dynamic> json){
-    firstName = json['firstName'];
-  }
-
-
 }
