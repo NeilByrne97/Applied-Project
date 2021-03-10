@@ -8,9 +8,9 @@ Postman
 Esp32 bugs
 	What is it? How it work?
 	Explain how all code works
-	Move from ESP8266
-	Power cable
-	Memory paritions
+X	Move from ESP8266	
+X	Power cable
+X	Memory paritions
 	LCD Screen
 3D printer
 	Type of printer
@@ -38,6 +38,7 @@ Flutter
 		Google cloud credits - thanks Ian
 	Quick sketch of future possibilities 
 		Ref https://www.youtube.com/watch?v=1ukSR1GRtMU
+	Future: Send menus
 Angular on mobile
 	NativeJS planned
 	When found problem with NFC reader
