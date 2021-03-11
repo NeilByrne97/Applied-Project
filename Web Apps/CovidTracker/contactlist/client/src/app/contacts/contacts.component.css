@@ -1495,10 +1495,15 @@ label{
     }
   }
   
-  .table {
+  table {
     width: 100%;
     margin-bottom: 1rem;
     color: #858796;
+    border: 1px solid #e3e6f0;
+    table-layout: fixed;
+  }
+  td{
+      text-overflow: ellipsis;
   }
   
   .table th,
