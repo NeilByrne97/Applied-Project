@@ -21,20 +21,19 @@
     </form>
 </div>
     <div *ngFor = "let contact of contacts">
-        <div class = "col-md-3">
-            {{contact.first_name}}
-        </div>
-        <div class = "col-md-3">
-            {{contact.last_name}}
-        </div>
-        <div class = "col-md-3">
-            {{contact.phone}}
-        </div>
-        <div class = "col-md-3">
-            {{contact.email}}
-        </div>
-        <div class = "col-md-3">
-            <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
-        </div>
+       
+        <table style = "width:100%">
+            <tr aria-rowspan="2"> 
+                <th>{{contact.first_name}}</th>
+                <th>{{contact.last_name}}</th>
+                <th>{{contact.phone}}</th>
+                <th>{{contact.email}}</th>
+                <th><div class = "col-md-3">
+                    <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
+                </div></th> 
+             </tr>
+        </table>
+
+        
     </div>
     

@@ -98,8 +98,6 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     Serial.println("json is " + InfoConcat);
     
    client.begin("http://192.168.0.80:3000/api/contact/");
-   // client.begin("http://localhost:3000/api/contact/");
-   // client.begin("https://jsonplaceholder.typicode.com/posts");
     client.addHeader("Content-Type", "application/json");
 
     const size_t CAPACITY = JSON_OBJECT_SIZE(8);
