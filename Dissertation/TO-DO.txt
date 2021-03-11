@@ -8,6 +8,7 @@ Postman
 Esp32 bugs
 	What is it? How it work?
 	Explain how all code works
+	Real tests of bluetooth signal
 X	Move from ESP8266	
 X	Power cable
 X	Memory paritions
@@ -18,7 +19,7 @@ X	Memory paritions
 	Battery pack
 	Failed prints
 	Different IDEs
-	Pics during + after print
+	Pics before + during + after print
 NFC
 	Schematic and pics
 	Why it wouldn't work
@@ -27,21 +28,21 @@ NFC
 	Differnce between NFC + RFID
 	NFC for computer - possible to link to Angular
 Flutter
-	Flutter 2
-	Dart
-	Package from dev.pub used for Bluetooth - Make comment on it's classes
-	iOS, android and recently web - Flutter 2
-	Google
-	Up and coming
-	Firebase
+X	Flutter 2
+X	Dart
+X	Package from dev.pub used for Bluetooth - Make comment on it's classes
+X	iOS, android and recently web - Flutter 2
+X	Google
+X	Up and coming
+X	Firebase
 		How it works
-		Google cloud credits - thanks Ian
+X		Google cloud credits - thanks Ian
 	Quick sketch of future possibilities 
 		Ref https://www.youtube.com/watch?v=1ukSR1GRtMU
 	Future: Send menus
-Angular on mobile
-	NativeJS planned
-	When found problem with NFC reader
+X Angular on mobile
+X	NativeJS planned
+X	When found problem with NFC reader
 Java
 	Pics of app
 	How it worked
