@@ -20,7 +20,19 @@
         <input type = "submit" class = "btn btn btn-success" value = "Add">
     </form>
 </div>
-    <div *ngFor = "let contact of contacts">
+
+<div style="padding-left: 5%;padding-right: 5%" >
+    <table>
+        <tr>
+            <td>First Name </td>
+            <td>Last Name </td>
+            <td>Phone Number </td>
+            <td>Email </td>
+        </tr>
+    
+    </table>
+</div>
+    <div *ngFor = "let contact of contacts" style="padding-left: 5%;padding-right: 5%" >
        
         <table >
             <tr > 
@@ -30,6 +42,7 @@
                 <td>{{contact.email}}</td>
                 <th>
                     <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
+                    <input type= "button" (click) = "updateContact(contact._id)" value = "Insert" class = "btn btn-info">
                </th> 
              </tr>
         </table>

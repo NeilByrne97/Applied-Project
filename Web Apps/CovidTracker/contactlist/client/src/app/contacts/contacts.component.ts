@@ -53,6 +53,20 @@ export class ContactsComponent implements OnInit {
       });
   }
 
+  updateContact(id:any){
+    var contacts = this.contacts;
+    this.contactService.deleteContact(id)
+      .subscribe(data =>{
+          if(data.n==1){
+            for(var i = 0;i< contacts.length;i++){
+              if(contacts[i]._id == id){
+                contacts.splice(i, 1);
+              }
+            }
+          }
+      });
+  }
+
   ngOnInit() {
     this.contactService.getContacts()
     .subscribe( contacts =>
