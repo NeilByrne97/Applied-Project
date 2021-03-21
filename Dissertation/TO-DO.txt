@@ -82,7 +82,8 @@ IDEs
 		Bluetooth Library
 		Com4
 	cmd
-	
+Vulnerabilities
+	This shit can defo get hacked
 
 	
 	

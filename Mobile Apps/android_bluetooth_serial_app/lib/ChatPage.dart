@@ -55,6 +55,7 @@ class _ChatPage extends State<ChatPage> {
         print(result.data());
         String jsonString = result.data().toString();
         print("JSON string is " + jsonString);
+       // String realJson = "{'firstName': Bob, 'lastName': Hope, 'phoneNumber': 6383836383, 'email': nohope@yeah.com}";
         var details = List<FirebaseContactDetails>();
         var detailsJSON = json.decode(jsonString);
 
@@ -347,16 +348,24 @@ class _ChatPage extends State<ChatPage> {
                   child: ListView.builder(
                     itemBuilder: (context, index){
                       getIt();
-                      return Card(
-                        child: Column(
-                          children:<Widget> [
-                            Text("Still here yes"),
-                            Text(_details[index].firstName),
-                            Text(_details[index].lastName),
-                            Text(_details[index].phoneNumber),
-                            Text(_details[index].email),
-                          ],
-                        ),
+                      return StreamBuilder<QuerySnapshot>(
+                      stream: firestore.snapshotsInSync(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError)
+                      return new Text('Error: ${snapshot.error}');
+                      switch (snapshot.connectionState) {
+                      case ConnectionState.waiting: return new Text('Loading...');
+                      default:
+                      return new ListView(
+                      children: snapshot.data.docs.map((DocumentSnapshot document) {
+                      return new ListTile(
+                      title: new Text(document['firstName']),
+                      subtitle: new Text(document['lastName']),
+                      );
+                      }).toList(),
+                      );
+                      }
+                      },
                       );
                     },
                     itemCount: _details.length,
@@ -371,10 +380,12 @@ class _ChatPage extends State<ChatPage> {
   void getIt(){
     firestore.collection("Contacts").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
+
         print(result.data());
         String jsonString = result.data().toString();
         print("break");
-        //UserDetails userDetails = UserDetails.fromJson(jsonDecode(jsonString));
+        FirebaseContactDetails userDetails = FirebaseContactDetails.fromJson(jsonDecode(jsonString));
+        print(userDetails.phoneNumber);
       });
     });
   }

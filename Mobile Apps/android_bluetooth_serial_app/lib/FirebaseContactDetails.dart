@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+
 class FirebaseContactDetails {
   String firstName;
   String lastName;
@@ -17,4 +19,5 @@ class FirebaseContactDetails {
     phoneNumber = json['phoneNumber'];
     email = json['email'];
   }
+
 }
