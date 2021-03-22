@@ -342,8 +342,9 @@ class _ChatPage extends State<ChatPage> {
                             children: snapshot.data.docs
                                 .map((DocumentSnapshot document) {
                               return new ListTile(
-                                title: new Text(document['firstName']),
-                                subtitle: new Text(document['lastName']),
+                                title: new Text(document['firstName'] + " " + document['lastName']),
+                                subtitle: new Text("Phone Number: " + document['phoneNumber'] + "\nEmail: "  + document['email']),
+                                onTap: ,
                               );
                             }).toList(),
                           );
