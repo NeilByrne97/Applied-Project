@@ -46,6 +46,11 @@ class _ChatPage extends State<ChatPage> {
     this.email = email;
   }
 
+  var firstNameField = TextEditingController();
+  var lastNameField = TextEditingController();
+  var phoneNumberField = TextEditingController();
+  var emailField = TextEditingController();
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
   List<FirebaseContactDetails> _details = List<FirebaseContactDetails>();
@@ -213,6 +218,7 @@ class _ChatPage extends State<ChatPage> {
                 flex: 6,
                 child: TextFormField(
                   // FirstName
+                  controller: firstNameField,
                   decoration: InputDecoration(
                       labelText: "  First Name",
                       fillColor: Colors.white,
@@ -230,6 +236,7 @@ class _ChatPage extends State<ChatPage> {
             flex: 6,
             child: TextFormField(
               // LastName
+              controller: lastNameField,
               decoration: InputDecoration(
                   labelText: "  Last Name",
                   fillColor: Colors.white,
@@ -244,6 +251,7 @@ class _ChatPage extends State<ChatPage> {
             flex: 6,
             child: TextFormField(
               // PhoneNumber
+              controller: phoneNumberField,
               decoration: InputDecoration(
                   labelText: "  Phone Number",
                   fillColor: Colors.white,
@@ -258,6 +266,7 @@ class _ChatPage extends State<ChatPage> {
             flex: 6,
             child: TextFormField(
               // Email
+              controller: emailField,
               decoration: InputDecoration(
                   labelText: "  Email",
                   fillColor: Colors.white,
@@ -344,7 +353,14 @@ class _ChatPage extends State<ChatPage> {
                               return new ListTile(
                                 title: new Text(document['firstName'] + " " + document['lastName']),
                                 subtitle: new Text("Phone Number: " + document['phoneNumber'] + "\nEmail: "  + document['email']),
-                                onTap: ,
+                                onTap: (){
+                                  firstNameField.text = document['firstName'];
+                                  lastNameField.text = document['lastName'];
+                                  phoneNumberField.text = document['phoneNumber'];
+                                  emailField.text = document['email'];
+
+                                  print(document['firstName'] + " " + document['lastName']);
+                                }
                               );
                             }).toList(),
                           );
