@@ -125,7 +125,6 @@ class _ChatPage extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
       print('Connected to the device');
       connection = _connection;
@@ -334,6 +333,7 @@ class _ChatPage extends State<ChatPage> {
           Flexible(
               flex: 24,
               child: ListView.builder(
+                controller: listScrollController,
                 itemBuilder: (context, index) {
                   //getIt();
                   return StreamBuilder<QuerySnapshot>(
@@ -358,7 +358,10 @@ class _ChatPage extends State<ChatPage> {
                                   lastNameField.text = document['lastName'];
                                   phoneNumberField.text = document['phoneNumber'];
                                   emailField.text = document['email'];
-
+                                  getFirstName(document['firstName']);
+                                  getLastName(document['lastName']);
+                                  getPhoneNumber(document['phoneNumber']);
+                                  getEmail(document['email']);
                                   print(document['firstName'] + " " + document['lastName']);
                                 }
                               );
