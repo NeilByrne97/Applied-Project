@@ -85,6 +85,12 @@ IDEs
 Vulnerabilities
 	This shit can defo get hacked
 
+Ruby on Rails
+	Get it working together
+	Couple pages
+	Discuss ESP 32's flexability 
+	Project is modular - System architecture
+
 	
 	
 	

@@ -30,43 +30,35 @@ class _ChatPage extends State<ChatPage> {
   static final clientID = 0;
   BluetoothConnection connection;
 
-  getFirstName(firstName){
+  getFirstName(firstName) {
     this.firstName = firstName;
   }
 
-  getLastName(lastName){
+  getLastName(lastName) {
     this.lastName = lastName;
   }
 
-  getPhoneNumber(phoneNumber){
+  getPhoneNumber(phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
 
-  getEmail(email){
+  getEmail(email) {
     this.email = email;
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
   List<FirebaseContactDetails> _details = List<FirebaseContactDetails>();
-  Future fetchDetails() async{
+  Future fetchDetails() async {
     firestore.collection("Contacts").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
-        String jsonString = result.data().toString();
-        print("JSON string is " + jsonString);
-       // String realJson = "{'firstName': Bob, 'lastName': Hope, 'phoneNumber': 6383836383, 'email': nohope@yeah.com}";
-        var details = List<FirebaseContactDetails>();
-        var detailsJSON = json.decode(jsonString);
-
-        for(var detailJSON in detailsJSON) {
-          details.add(FirebaseContactDetails.fromJson(detailJSON));
-        }
       });
     });
   }
+
   void _create() async {
-    String docName =lastName + " " + firstName;
+    String docName = lastName + " " + firstName;
 
     try {
       await firestore.collection('Contacts').doc(docName).set({
@@ -75,17 +67,18 @@ class _ChatPage extends State<ChatPage> {
         'phoneNumber': phoneNumber,
         'email': email,
       });
-      getIt();   // Update the list displayed
+      getIt(); // Update the list displayed
     } catch (e) {
       print(e);
     }
   }
 
   void _read() async {
-    String docName ="Neil Byrne";
+    String docName = "Neil Byrne";
     DocumentSnapshot documentSnapshot;
     try {
-      documentSnapshot = await firestore.collection('Contacts').doc(docName).get();
+      documentSnapshot =
+          await firestore.collection('Contacts').doc(docName).get();
       print(documentSnapshot.data);
     } catch (e) {
       print(e);
@@ -97,7 +90,7 @@ class _ChatPage extends State<ChatPage> {
       firestore.collection('users').doc('testUser').update({
         'firstName': 'Alan',
       });
-      getIt();   // Update the list displayed
+      getIt(); // Update the list displayed
     } catch (e) {
       print(e);
     }
@@ -106,18 +99,17 @@ class _ChatPage extends State<ChatPage> {
   void _delete() async {
     try {
       firestore.collection('users').doc('testUser').delete();
-      getIt();   // Update the list displayed
+      getIt(); // Update the list displayed
     } catch (e) {
       print(e);
     }
   }
 
-
   List<_Message> messages = List<_Message>();
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-  new TextEditingController();
+      new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -173,18 +165,13 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    fetchDetails().then((value){
-    setState(() {
-      _details.addAll(value);
-      });
-    });
 
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
           Container(
             child: Text(
-                    (text) {
+                (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
                 style: TextStyle(color: Colors.white)),
@@ -193,7 +180,7 @@ class _ChatPage extends State<ChatPage> {
             width: 222.0,
             decoration: BoxDecoration(
                 color:
-                _message.whom == clientID ? Colors.blueAccent : Colors.grey,
+                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
                 borderRadius: BorderRadius.circular(7.0)),
           ),
         ],
@@ -208,90 +195,80 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to ' + widget.server.name + '...')
               : isConnected
-              ? Text('Connected with ' + widget.server.name)
-              : Text('Chat log with ' + widget.server.name))),
+                  ? Text('Connected with ' + widget.server.name)
+                  : Text('Chat log with ' + widget.server.name))),
       body: SafeArea(
           child: Column(
-            children: <Widget>[
+        children: <Widget>[
           /*    Flexible( // Display sent messages
                 child: ListView(
                     padding: const EdgeInsets.all(12.0),
                     controller: listScrollController,
                     children: list),
               ),
-              */Row(
-                children: <Widget>[
-                  Flexible(
-                    flex: 6,
-                    child: TextFormField(         // FirstName
-                      decoration: InputDecoration(
-                          labelText: "  First Name",
-                          fillColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue,
-                                  width: 2.0
-                              )
-                          )
-                      ),
-                      onChanged: (String firstName){
-                        getFirstName(firstName);
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              */
+          Row(
+            children: <Widget>[
               Flexible(
                 flex: 6,
-                child: TextFormField(         // LastName
+                child: TextFormField(
+                  // FirstName
                   decoration: InputDecoration(
-                      labelText: "  Last Name",
+                      labelText: "  First Name",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue,
-                              width: 2.0
-                          )
-                      )
-                  ),
-                  onChanged: (String lastName){
-                    getLastName(lastName);
+                          borderSide:
+                              BorderSide(color: Colors.blue, width: 2.0))),
+                  onChanged: (String firstName) {
+                    getFirstName(firstName);
                   },
                 ),
               ),
-              Flexible(
-                flex: 6,
-                child: TextFormField(         // PhoneNumber
-                  decoration: InputDecoration(
-                      labelText: "  Phone Number",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue,
-                              width: 2.0
-                          )
-                      )
-                  ),
-                  onChanged: (String phoneNumber){
-                    getPhoneNumber(phoneNumber);
-                  },
-                ),
-              ),
-              Flexible(
-                flex: 6,
-                child: TextFormField(         // Email
-                  decoration: InputDecoration(
-                      labelText: "  Email",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue,
-                              width: 2.0
-                          )
-                      )
-                  ),
-                  onChanged: (String email){
-                    getEmail(email);
-                  },
-                ),
-              ),
-              /*  Flexible(
+            ],
+          ),
+          Flexible(
+            flex: 6,
+            child: TextFormField(
+              // LastName
+              decoration: InputDecoration(
+                  labelText: "  Last Name",
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0))),
+              onChanged: (String lastName) {
+                getLastName(lastName);
+              },
+            ),
+          ),
+          Flexible(
+            flex: 6,
+            child: TextFormField(
+              // PhoneNumber
+              decoration: InputDecoration(
+                  labelText: "  Phone Number",
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0))),
+              onChanged: (String phoneNumber) {
+                getPhoneNumber(phoneNumber);
+              },
+            ),
+          ),
+          Flexible(
+            flex: 6,
+            child: TextFormField(
+              // Email
+              decoration: InputDecoration(
+                  labelText: "  Email",
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0))),
+              onChanged: (String email) {
+                getEmail(email);
+              },
+            ),
+          ),
+          /*  Flexible(
                   flex: 2,
                   child: Container(
                     margin: const EdgeInsets.only(left: 16.0),
@@ -309,83 +286,82 @@ class _ChatPage extends State<ChatPage> {
                       enabled: isConnected,
                     ),
                   ),
-                ),*/  // Type message
-            Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  color: Colors.blue,
-                  iconSize: 50,
-                  onPressed: isConnected
-                      ? () => _sendMessage(firstName + "-" + lastName + "-" + phoneNumber + "-" + email)
-                        : null),
-                IconButton(
-                  color: Colors.blue,
-                  iconSize: 50,
-                  icon: const Icon(Icons.save),
-                  onPressed: _create,
-              )
-            ]),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
+                ),*/ // Type message
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            IconButton(
+                icon: const Icon(Icons.send),
                 color: Colors.blue,
                 iconSize: 50,
-                icon: const Icon(Icons.update),
-                onPressed: _update,
-              ),
-                  IconButton(
-                  color: Colors.blue,
-                  iconSize: 50,
-                  icon: const Icon(Icons.delete),
-                  onPressed: _delete,
-                ),
-              ]),
-              Flexible(
-                flex: 24,
-                  child: ListView.builder(
-                    itemBuilder: (context, index){
-                      getIt();
-                      return StreamBuilder<QuerySnapshot>(
-                      stream: firestore.snapshotsInSync(),
-                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                onPressed: isConnected
+                    ? () => _sendMessage(firstName +
+                        "-" +
+                        lastName +
+                        "-" +
+                        phoneNumber +
+                        "-" +
+                        email)
+                    : null),
+            IconButton(
+              color: Colors.blue,
+              iconSize: 50,
+              icon: const Icon(Icons.save),
+              onPressed: _create,
+            )
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            IconButton(
+              color: Colors.blue,
+              iconSize: 50,
+              icon: const Icon(Icons.update),
+              onPressed: _update,
+            ),
+            IconButton(
+              color: Colors.blue,
+              iconSize: 50,
+              icon: const Icon(Icons.delete),
+              onPressed: _delete,
+            ),
+          ]),
+          Flexible(
+              flex: 24,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  //getIt();
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: collection.snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
+                        return new Text('Error: ${snapshot.error}');
                       switch (snapshot.connectionState) {
-                      case ConnectionState.waiting: return new Text('Loading...');
-                      default:
-                      return new ListView(
-                      children: snapshot.data.docs.map((DocumentSnapshot document) {
-                      return new ListTile(
-                      title: new Text(document['firstName']),
-                      subtitle: new Text(document['lastName']),
-                      );
-                      }).toList(),
-                      );
+                        case ConnectionState.waiting:
+                          return new Text('Loading...');
+                        default:
+                          return new ListView(
+                            shrinkWrap: true,
+                            children: snapshot.data.docs
+                                .map((DocumentSnapshot document) {
+                              return new ListTile(
+                                title: new Text(document['firstName']),
+                                subtitle: new Text(document['lastName']),
+                              );
+                            }).toList(),
+                          );
                       }
-                      },
-                      );
                     },
-                    itemCount: _details.length,
-                  )
-              ),
-            ],
-          )
-    ),
+                  );
+                },
+              )),
+        ],
+      )),
     );
   }
 
-  void getIt(){
-    firestore.collection("Contacts").get().then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
+  void getIt() {
+   collection.get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
+        print(documentSnapshot.data().toString());
 
-        print(result.data());
-        String jsonString = result.data().toString();
-        print("break");
-        FirebaseContactDetails userDetails = FirebaseContactDetails.fromJson(jsonDecode(jsonString));
-        print(userDetails.phoneNumber);
       });
     });
   }
@@ -425,7 +401,7 @@ class _ChatPage extends State<ChatPage> {
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                0, _messageBuffer.length - backspacesCounter)
+                    0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -434,7 +410,7 @@ class _ChatPage extends State<ChatPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-          0, _messageBuffer.length - backspacesCounter)
+              0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }
