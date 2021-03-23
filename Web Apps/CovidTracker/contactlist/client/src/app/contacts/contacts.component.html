@@ -19,7 +19,11 @@
         </div>
         <input type = "submit" class = "btn btn btn-success" value = "Add">
     </form>
-</div>
+    <div class="md-form">
+        <input type="search" [(ngModel)]="searchText" placeholder="Search text">
+      </div>
+
+
 
 <div style="padding-left: 5%;padding-right: 5%" >
     <table>
@@ -32,7 +36,7 @@
     
     </table>
 </div>
-    <div *ngFor = "let contact of contacts" style="padding-left: 5%;padding-right: 5%" >
+    <div *ngFor = "let contact of contacts  | filter: searchText" style="padding-left: 5%;padding-right: 5%" >
        
         <table >
             <tr > 
@@ -49,4 +53,4 @@
 
         
     </div>
-    
+</div> 

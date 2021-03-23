@@ -3,6 +3,7 @@ import { ContactService} from '../contact.service';
 import { Contact} from '../contact';
 
 
+
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
@@ -20,6 +21,9 @@ export class ContactsComponent implements OnInit {
 
 
   constructor(private contactService: ContactService) { }
+
+  searchText: string; 
+
 
   addContact(){
     const newContact ={

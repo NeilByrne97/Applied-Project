@@ -11,8 +11,7 @@ export class ContactService {
   constructor(private http: Http) { }
 
   getContacts(){
-    return this.http.get('http://localhost:3000/api/contacts/')
-    .pipe(map((res: any) => res.json()));
+    return this.http.get('http://localhost:3000/api/contacts/').pipe(map((res: any) => res.json()));
   }
 
   // Add contact
