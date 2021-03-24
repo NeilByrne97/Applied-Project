@@ -9,6 +9,9 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './filter.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AngularMaterialModule} from './angular-material.module';
+
 
 
 @NgModule({
@@ -22,7 +25,9 @@ import { FilterPipe } from './filter.pipe';
     AppRoutingModule,
     HttpModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    AngularMaterialModule
   ],
   providers: [
     ContactsComponent,

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 import { ContactService} from '../contact.service';
 import { Contact} from '../contact';
-
+import {EmailService} from '../services/email.service'
 
 
 @Component({
@@ -20,10 +21,25 @@ export class ContactsComponent implements OnInit {
   email: string;
 
 
-  constructor(private contactService: ContactService) { }
+  constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService) { }
 
   searchText: string; 
+  title = 'nodeMailerApp';
+  nodeMailerForm :FormGroup;
 
+
+ 
+
+  sendMail(){
+    alert("jjj");
+    let emailr  = this.nodeMailerForm.value.emailr;
+    let reqObj = {
+      emailr:emailr
+    }
+    this.emailService.sendMessage(reqObj).subscribe(data=>{
+      console.log(data);
+    })
+  }
 
   addContact(){
     const newContact ={
@@ -41,6 +57,8 @@ export class ContactsComponent implements OnInit {
         this.contacts = contacts);
     });
   }
+
+
 
 
   deleteContact(id:any){
@@ -72,9 +90,8 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactService.getContacts()
-    .subscribe( contacts =>
-      this.contacts = contacts);
+    this.contactService.getContacts().subscribe( contacts =>this.contacts = contacts);
+    this.nodeMailerForm = this.formBuilder.group({emailr:[null,[Validators.required]]})
   }
 
 }

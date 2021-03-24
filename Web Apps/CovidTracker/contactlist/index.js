@@ -7,6 +7,7 @@ var path = require('path');
 var app = express();
 
 const route = require('./routes/route');
+var emailRouter = require('./routes/emailRouter');
 
 // Connect to mongoDB
 mongoose.connect('mongodb://localhost:27017/contactlist');
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/api', route);
+app.use('/email',emailRouter);
 
 // Test server
 app.get('/', (req, res)=>{

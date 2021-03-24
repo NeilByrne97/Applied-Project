@@ -54,3 +54,14 @@
         
     </div>
 </div> 
+
+<div class="form-container">
+    <form [formGroup]="nodeMailerForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter the email id you wish to send mail to:</mat-label>
+        <input matInput #emailr placeholder="provide email id here" formControlName="emailr" type="email">
+      </mat-form-field>
+      <br>
+   <button  mat-raised-button color="accent" type="submit" (click)="sendMail()">Click Me</button>
+  </form>
+  </div>
