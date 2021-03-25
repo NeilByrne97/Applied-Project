@@ -19,6 +19,7 @@ export class ContactsComponent implements OnInit {
   last_name: string;
   phone: string;
   email: string;
+  timestamp: Date; 
 
 
   constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService) { }

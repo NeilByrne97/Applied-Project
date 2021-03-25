@@ -17,6 +17,10 @@ const ContactSchema = mongoose.Schema({
     email:{
         type: String,
         required: true
+    },
+    timestamp : {
+        type: Date, default: Date.now
+
     }
 
 });

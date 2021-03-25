@@ -44,6 +44,7 @@
                 <td>{{contact.last_name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.email}}</td>
+                <td>{{contact.timestamp}}</td>
                 <th>
                     <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
                     <input type= "button" (click) = "updateContact(contact._id)" value = "Insert" class = "btn btn-info">
@@ -53,15 +54,15 @@
 
         
     </div>
+    <div class="form-container">
+        <form [formGroup]="nodeMailerForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter the email id you wish to send mail to:</mat-label>
+            <input matInput #emailr placeholder="provide email id here" formControlName="emailr" type="email">
+          </mat-form-field>
+          <br>
+       <button  mat-raised-button color="accent" type="submit" (click)="sendMail()">Click Me</button>
+      </form>
+      </div>
 </div> 
 
-<div class="form-container">
-    <form [formGroup]="nodeMailerForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Enter the email id you wish to send mail to:</mat-label>
-        <input matInput #emailr placeholder="provide email id here" formControlName="emailr" type="email">
-      </mat-form-field>
-      <br>
-   <button  mat-raised-button color="accent" type="submit" (click)="sendMail()">Click Me</button>
-  </form>
-  </div>

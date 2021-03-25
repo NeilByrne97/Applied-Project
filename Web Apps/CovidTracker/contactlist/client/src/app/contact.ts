@@ -4,4 +4,5 @@ export class Contact{
     last_name: string;
     phone: string;
     email: string;
+    timestamp: Date;
 }
