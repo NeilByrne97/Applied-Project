@@ -2,6 +2,7 @@
 Latex
 	Doing it in college
 	Why I picked it
+	Overleaf
 Postman
 	Debugging
 	Aided with Android debugging
@@ -90,6 +91,7 @@ Ruby on Rails
 	Couple pages
 	Discuss ESP 32's flexability 
 	Project is modular - System architecture
+Functionality of each component Mobile, ESP32, Web
 
 	
 	
