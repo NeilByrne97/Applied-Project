@@ -12,7 +12,7 @@ const char* ssid="Infinitang IV";
 const char* password = "PowPowPow1";
 char jsonOutput[128];
 
-AsyncWebServer server(80);
+AsyncWebServer server(80); // Port 80
 
 // Check if bluetooth is enabled
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -115,7 +115,8 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     
     client.begin("http://192.168.0.80:3000/api/contact/");
     client.addHeader("Content-Type", "application/json");
-
+    
+    // Alocate memory for the document
     const size_t CAPACITY = JSON_OBJECT_SIZE(8);
     StaticJsonDocument<CAPACITY> doc;
 
