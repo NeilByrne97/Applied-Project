@@ -2,11 +2,17 @@
 #include "WiFi.h"
 #include "HTTPClient.h"
 #include <ArduinoJson.h>
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncElegantOTA.h>
+#include <TelnetStream.h>
 
 // WiFi config
 const char* ssid="Infinitang IV";
 const char* password = "PowPowPow1";
 char jsonOutput[128];
+
+AsyncWebServer server(80);
 
 // Check if bluetooth is enabled
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -18,30 +24,38 @@ WiFiClient client;
 
 void setup() {
   Serial.begin(115200);
- // Wifi setup
-  Serial.print("Wifi connecting to ");
-  Serial.println( ssid );
-  WiFi.begin(ssid,password);
-  Serial.println();
-  Serial.print("Connecting");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.println("");
 
-    while( WiFi.status() != WL_CONNECTED ){
-      delay(500);
-      Serial.print(".");        
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
-  
-  // Print WIFI
-  Serial.println();
-  Serial.println("Wifi Connected Success!");
-  Serial.print("NodeMCU IP Address : ");
-  Serial.println(WiFi.localIP() );
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", "Hi! I am ESP32.");
+  });
+
+  AsyncElegantOTA.begin(&server);    // Start ElegantOTA
+  server.begin();
+  Serial.println("HTTP server started");
 
   // Print BLUETOOTH
   SerialBT.begin("ESP32"); //Bluetooth device name
-  Serial.println("The device started, now you can pair it with bluetooth!");
+  Serial.println("Bluetooth started");
+
+  TelnetStream.begin();
 }
 
 void loop() {
+    AsyncElegantOTA.loop();
   if (Serial.available()) { 
     SerialBT.write(Serial.read());
   }
@@ -84,6 +98,13 @@ void convertString(String infoString){
       Serial.println("Last name is " + lastName);
       Serial.println("Phone Number is " + phoneNumber);
       Serial.println("Email is " + email);
+
+      // TelnetStream setup on PuTTY - 192.168.0.137
+      TelnetStream.print("First name is " + firstName);
+      TelnetStream.print("Last name is " + lastName);
+      TelnetStream.print("Phone Number is " + phoneNumber);
+      TelnetStream.print("Email is " + email);
+
       sendJSON(firstName, lastName, phoneNumber, email);
 }
 
@@ -92,12 +113,14 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     HTTPClient client;
 
 
-   Serial.println("String is " + firstName + lastName + phoneNumber + email);
+    Serial.println("String is " + firstName + lastName + phoneNumber + email);
 
     String InfoConcat = firstName + "/" + lastName + "/" + phoneNumber + "/" + email;
     Serial.println("json is " + InfoConcat);
+    TelnetStream.print("json is " + InfoConcat);
+
     
-   client.begin("http://192.168.0.80:3000/api/contact/");
+    client.begin("http://192.168.0.80:3000/api/contact/");
     client.addHeader("Content-Type", "application/json");
 
     const size_t CAPACITY = JSON_OBJECT_SIZE(8);
@@ -126,10 +149,12 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     }
     else{
       Serial.println("Error on HTTP request");
+      TelnetStream.print("Error on HTTP request");
     }
   }
   else{
     Serial.println("Connection Lost");
+    TelnetStream.print("Connection Lost");
   }
   delay(10000);  
 }
