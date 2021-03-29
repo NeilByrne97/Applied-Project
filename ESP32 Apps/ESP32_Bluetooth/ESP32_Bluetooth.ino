@@ -61,7 +61,6 @@ void loop() {
   }
   if (SerialBT.available()) {
     String infoString=SerialBT.readString();
-    Serial.println("String is " + infoString); 
     convertString(infoString);
   }
   delay(20);  
@@ -100,10 +99,10 @@ void convertString(String infoString){
       Serial.println("Email is " + email);
 
       // TelnetStream setup on PuTTY - 192.168.0.137
-      TelnetStream.print("First name is " + firstName);
-      TelnetStream.print("Last name is " + lastName);
-      TelnetStream.print("Phone Number is " + phoneNumber);
-      TelnetStream.print("Email is " + email);
+      TelnetStream.println("First name is " + firstName);
+      TelnetStream.println("Last name is " + lastName);
+      TelnetStream.println("Phone Number is " + phoneNumber);
+      TelnetStream.println("Email is " + email);
 
       sendJSON(firstName, lastName, phoneNumber, email);
 }
@@ -112,13 +111,7 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
   if((WiFi.status() == WL_CONNECTED)){
     HTTPClient client;
 
-
-    Serial.println("String is " + firstName + lastName + phoneNumber + email);
-
     String InfoConcat = firstName + "/" + lastName + "/" + phoneNumber + "/" + email;
-    Serial.println("json is " + InfoConcat);
-    TelnetStream.print("json is " + InfoConcat);
-
     
     client.begin("http://192.168.0.80:3000/api/contact/");
     client.addHeader("Content-Type", "application/json");
@@ -133,15 +126,15 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     object["email"] = email;
     
     serializeJson(doc, jsonOutput);
-    Serial.println("");
-
-    Serial.println(String(jsonOutput));
+    Serial.println(String(jsonOutput));    
+    TelnetStream.println(String(jsonOutput));
     
     int httpCode = client.POST(String(jsonOutput));
 
     if(httpCode > 0){
       String payload = client.getString();
       Serial.println("\nStatuscode: " + String(httpCode));
+      TelnetStream.println("\nStatuscode: " + String(httpCode));
       Serial.println(payload);
 
       client.end();
@@ -149,12 +142,14 @@ void sendJSON(String firstName, String lastName, String phoneNumber, String emai
     }
     else{
       Serial.println("Error on HTTP request");
-      TelnetStream.print("Error on HTTP request");
+      TelnetStream.println("Error on HTTP request");
     }
   }
   else{
     Serial.println("Connection Lost");
-    TelnetStream.print("Connection Lost");
+    TelnetStream.println("Connection Lost");
   }
   delay(10000);  
+    Serial.println("");
+    TelnetStream.println("");
 }
