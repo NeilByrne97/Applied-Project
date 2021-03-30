@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:core';
 import 'dart:typed_data';
-import 'package:androidbluetoothserialapp/FirebaseContactDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -331,7 +330,7 @@ class _ChatPage extends State<ChatPage> {
               color: Colors.blue,
               iconSize: 50,
               icon: const Icon(Icons.update),
-              onPressed: _update,
+              onPressed: _updateAlert,
             ),
             IconButton(
               color: Colors.blue,
@@ -492,6 +491,43 @@ class _ChatPage extends State<ChatPage> {
               onPressed: () {
                 Navigator.of(context).pop();  // Close dialog box
                 _delete();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update Contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This will permanently update ' + firstNameField.text + " " + lastNameField.text),
+                Text('Phone Number: ' + phoneNumberField.text),
+                Text('Email: ' + emailField.text),
+                Text('Are you sure?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Update'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+                _update();
               },
             ),
             TextButton(
