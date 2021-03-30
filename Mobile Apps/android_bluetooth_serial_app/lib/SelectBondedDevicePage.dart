@@ -24,7 +24,7 @@ enum _DeviceAvailability {
 class _DeviceWithAvailability extends BluetoothDevice {
   BluetoothDevice device;
   _DeviceAvailability availability;
-  int rssi;
+  int rssi; // Received Signal Strength Indication
 
   _DeviceWithAvailability(this.device, this.availability, [this.rssi]);
 }

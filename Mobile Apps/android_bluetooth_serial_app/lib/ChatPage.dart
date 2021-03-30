@@ -10,7 +10,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
-
   const ChatPage({this.server});
 
   @override
@@ -26,6 +25,7 @@ class _Message {
 
 class _ChatPage extends State<ChatPage> {
   String firstName, lastName, phoneNumber, email;
+
   static final clientID = 0;
   BluetoothConnection connection;
 
@@ -50,75 +50,6 @@ class _ChatPage extends State<ChatPage> {
   var phoneNumberField = TextEditingController();
   var emailField = TextEditingController();
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
-  Future fetchDetails() async {
-    firestore.collection("Contacts").get().then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        print(result.data());
-      });
-    });
-  }
-
-  void _create() async {
-    String docName = lastName + " " + firstName;
-    try {
-      await firestore.collection('Contacts').doc(docName).set({
-        'firstName': firstName,
-        'lastName': lastName,
-        'phoneNumber': phoneNumber,
-        'email': email,
-      });
-      getIt(); // Update the list displayed
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _read() async {
-    String docName = "Neil Byrne";
-    DocumentSnapshot documentSnapshot;
-    try {
-      documentSnapshot =
-          await firestore.collection('Contacts').doc(docName).get();
-      print(documentSnapshot.data);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _update() async {
-    String docName = lastNameField.text + " " + firstNameField.text;
-    try {
-      firestore.collection('Contacts').doc(docName).update({
-        'firstName': firstNameField.text,
-        'lastName': lastNameField.text,
-        'phoneNumber': phoneNumberField.text,
-        'email': emailField.text,
-      });
-      print("Updating " + docName);
-      getIt(); // Update the list displayed
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _delete() async {
-    String docName = lastNameField.text + " " + firstNameField.text;
-
-    try {
-      collection.doc(docName).delete();
-      firstNameField.text = "";
-      lastNameField.text = "";
-      phoneNumberField.text = "";
-      emailField.text = "";
-      print("Deleting " + docName);
-      getIt(); // Update the list displayed
-    } catch (e) {
-      print(e);
-    }
-  }
-
   List<_Message> messages = List<_Message>();
   String _messageBuffer = '';
 
@@ -130,6 +61,63 @@ class _ChatPage extends State<ChatPage> {
   bool get isConnected => connection != null && connection.isConnected;
 
   bool isDisconnecting = false;
+
+
+
+  CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
+  Future fetchDetails() async {
+    collection.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print(result.data());
+      });
+    });
+  }
+
+  void _create() async {
+    String docName = lastName + " " + firstName;
+    try {
+      await collection.doc(docName).set({
+        'firstName': firstName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'email': email,
+      });
+      getCollection(); // Update the list displayed
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _update() async {
+    String docName = lastNameField.text + " " + firstNameField.text;
+    try {
+      collection.doc(docName).update({
+        'firstName': firstNameField.text,
+        'lastName': lastNameField.text,
+        'phoneNumber': phoneNumberField.text,
+        'email': emailField.text,
+      });
+      print("Updating " + docName);
+      getCollection(); // Update the list displayed
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _delete() async {
+    String docName = lastNameField.text + " " + firstNameField.text;
+    try {
+      collection.doc(docName).delete();
+      firstNameField.text = "";
+      lastNameField.text = "";
+      phoneNumberField.text = "";
+      emailField.text = "";
+      print("Deleting " + docName);
+      getCollection(); // Update the list displayed
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void initState() {
@@ -322,7 +310,7 @@ class _ChatPage extends State<ChatPage> {
               color: Colors.blue,
               iconSize: 50,
               icon: const Icon(Icons.save),
-              onPressed: _create,
+              onPressed: _createAlert,
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -343,6 +331,7 @@ class _ChatPage extends State<ChatPage> {
               flex: 24,
               child: ListView.builder(
                 controller: listScrollController,
+                padding: const EdgeInsets.all(12.0),
                 itemBuilder: (context, index) {
                   //getIt();
                   return StreamBuilder<QuerySnapshot>(
@@ -386,11 +375,10 @@ class _ChatPage extends State<ChatPage> {
     );
   }
 
-  void getIt() {
+  void getCollection() {
    collection.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
         print(documentSnapshot.data().toString());
-
       });
     });
   }
@@ -450,7 +438,7 @@ class _ChatPage extends State<ChatPage> {
 
     if (text.length > 0) {
       try {
-        connection.output.add(utf8.encode(text + "\r\n"));
+        connection.output.add(utf8.encode(text));
         await connection.output.allSent;
 
         setState(() {
@@ -469,6 +457,38 @@ class _ChatPage extends State<ChatPage> {
       }
     }
   }
+
+  Future<void> _createAlert() async {
+    _create();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('New Contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('New Contact Added!'),
+                Text(firstNameField.text + " " + lastNameField.text),
+                Text('Phone Number: ' + phoneNumberField.text),
+                Text('Email: ' + emailField.text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Continue'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   Future<void> _deleteAlert() async {
     return showDialog<void>(

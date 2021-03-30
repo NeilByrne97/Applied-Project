@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import './DiscoveryPage.dart';
 import './SelectBondedDevicePage.dart';
 import './ChatPage.dart';
 
@@ -21,8 +17,6 @@ class MainPage extends StatefulWidget {
 
 
 class _MainPage extends State<MainPage> {
-  String firstName, lastName, phoneNumber, email;
-
   BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 
   String _address = "...";
@@ -30,8 +24,6 @@ class _MainPage extends State<MainPage> {
 
   Timer _discoverableTimeoutTimer;
   int _discoverableTimeoutSecondsLeft = 0;
-
-
   bool _autoAcceptPairingRequests = false;
 
   @override
@@ -82,6 +74,13 @@ class _MainPage extends State<MainPage> {
   }
 
   @override
+  void dispose() {
+    FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
+    _discoverableTimeoutTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -104,7 +103,6 @@ class _MainPage extends State<MainPage> {
                   else
                     await FlutterBluetoothSerial.instance.requestDisable();
                 }
-
                 future().then((_) {
                   setState(() {});
                 });
