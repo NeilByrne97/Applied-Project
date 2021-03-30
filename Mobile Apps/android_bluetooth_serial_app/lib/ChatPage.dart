@@ -109,6 +109,10 @@ class _ChatPage extends State<ChatPage> {
 
     try {
       collection.doc(docName).delete();
+      firstNameField.text = "";
+      lastNameField.text = "";
+      phoneNumberField.text = "";
+      emailField.text = "";
       print("Deleting " + docName);
       getIt(); // Update the list displayed
     } catch (e) {
@@ -120,7 +124,7 @@ class _ChatPage extends State<ChatPage> {
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-      new TextEditingController();
+  new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -333,7 +337,7 @@ class _ChatPage extends State<ChatPage> {
               color: Colors.blue,
               iconSize: 50,
               icon: const Icon(Icons.delete),
-              onPressed: _delete,
+              onPressed: _deleteAlert,
             ),
           ]),
           Flexible(
@@ -466,4 +470,40 @@ class _ChatPage extends State<ChatPage> {
       }
     }
   }
+
+  Future<void> _deleteAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This will permanently delete ' + firstNameField.text + " " + lastNameField.text),
+                Text('Are you sure?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+                _delete();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

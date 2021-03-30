@@ -93,6 +93,8 @@ Ruby on Rails
 	Project is modular - System architecture
 Functionality of each component Mobile, ESP32, Web
 
+Populate Firbase database with other contact apps
+
 	
 	
 	
