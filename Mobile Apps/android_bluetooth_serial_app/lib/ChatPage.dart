@@ -53,7 +53,6 @@ class _ChatPage extends State<ChatPage> {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
-  List<FirebaseContactDetails> _details = List<FirebaseContactDetails>();
   Future fetchDetails() async {
     firestore.collection("Contacts").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
@@ -64,7 +63,6 @@ class _ChatPage extends State<ChatPage> {
 
   void _create() async {
     String docName = lastName + " " + firstName;
-
     try {
       await firestore.collection('Contacts').doc(docName).set({
         'firstName': firstName,
@@ -91,10 +89,15 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void _update() async {
+    String docName = lastNameField.text + " " + firstNameField.text;
     try {
-      firestore.collection('users').doc('testUser').update({
-        'firstName': 'Alan',
+      firestore.collection('Contacts').doc(docName).update({
+        'firstName': firstNameField.text,
+        'lastName': lastNameField.text,
+        'phoneNumber': phoneNumberField.text,
+        'email': emailField.text,
       });
+      print("Updating " + docName);
       getIt(); // Update the list displayed
     } catch (e) {
       print(e);
@@ -102,8 +105,11 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void _delete() async {
+    String docName = lastNameField.text + " " + firstNameField.text;
+
     try {
-      firestore.collection('users').doc('testUser').delete();
+      collection.doc(docName).delete();
+      print("Deleting " + docName);
       getIt(); // Update the list displayed
     } catch (e) {
       print(e);
