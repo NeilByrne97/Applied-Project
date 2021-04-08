@@ -90,7 +90,6 @@ class _MainPage extends State<MainPage> {
         child: ListView(
           children: <Widget>[
             Divider(),
-           // ListTile(title: const Text('General')),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
@@ -123,7 +122,6 @@ class _MainPage extends State<MainPage> {
                       },
                     ),
                   );
-
                   if (selectedDevice != null) {
                     print('Connect -> selected ' + selectedDevice.address);
                     _startChat(context, selectedDevice);
