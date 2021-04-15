@@ -111,17 +111,6 @@ class _MainPage extends State<MainPage> {
               },
             ),
             Divider(),
-          ListTile(
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  child: SignInButton(Buttons.Google, onPressed: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen()))
-                  )),
-              ],
-            ),
-          ),
 
             ListTile(title: const Text('Bluetooth devices')),
 

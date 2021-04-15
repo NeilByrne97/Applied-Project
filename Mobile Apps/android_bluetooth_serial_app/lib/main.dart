@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import './MainPage.dart';
+import './Login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +17,7 @@ class Application extends StatelessWidget {
         primaryColor: Colors.blue,
         accentColor: Colors.cyan
     );
-    return MaterialApp(home: MainPage());
+    return MaterialApp(home: Login()
+    );
   }
 }
