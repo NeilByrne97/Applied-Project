@@ -44,6 +44,8 @@ X		Google cloud credits - thanks Ian
 X Angular on mobile
 X	NativeJS planned
 X	When found problem with NFC reader
+	Developer mode
+	Android over the air upload
 Java
 	Pics of app
 	How it worked

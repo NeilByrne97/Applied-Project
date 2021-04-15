@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "953306858431-2ld5d7o9vu7ag21dvspanpersq5kljes.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android_bluetooth_serial_app",
+            "certificate_hash": "7be5bf004df9b380b12fe35869b2a073c8c8c25c"
+          }
+        },
+        {
           "client_id": "953306858431-4i9paq7bpuftshvgjkgijnolrodejjrn.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:androidbluetoothserialapp/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 
 import './SelectBondedDevicePage.dart';
 import './ChatPage.dart';
@@ -108,6 +111,18 @@ class _MainPage extends State<MainPage> {
               },
             ),
             Divider(),
+          ListTile(
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  child: SignInButton(Buttons.Google, onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeScreen()))
+                  )),
+              ],
+            ),
+          ),
+
             ListTile(title: const Text('Bluetooth devices')),
 
             ListTile(
