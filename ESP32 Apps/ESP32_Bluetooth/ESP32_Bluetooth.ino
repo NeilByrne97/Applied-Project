@@ -61,6 +61,7 @@ void loop() {
   }
   if (SerialBT.available()) {
     String infoString=SerialBT.readString();
+    SerialBT.print("Greetings from ESP32");
     convertString(infoString);
   }
   delay(20);  

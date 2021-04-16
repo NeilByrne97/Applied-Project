@@ -199,13 +199,13 @@ class _ChatPage extends State<ChatPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          /*    Flexible( // Display sent messages
+              Flexible( // Display sent messages
                 child: ListView(
                     padding: const EdgeInsets.all(12.0),
                     controller: listScrollController,
                     children: list),
               ),
-              */
+
           Row(
             children: <Widget>[
               Flexible(
@@ -405,9 +405,11 @@ class _ChatPage extends State<ChatPage> {
         }
       }
     }
-
+    String espUrl = "";
     // Create message if there is new line character
     String dataString = String.fromCharCodes(buffer);
+    espUrl += dataString;
+    print("Message is " + espUrl);
     int index = buffer.indexOf(13);
     if (~index != 0) {
       setState(() {

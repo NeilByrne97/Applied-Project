@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
 
 import './SelectBondedDevicePage.dart';
 import './ChatPage.dart';
 import 'AuthBloc.dart';
 import 'Login.dart';
+import 'Places.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -178,6 +180,12 @@ class _MainPage extends State<MainPage> {
                   }
                 },
               ),
+            ),
+            ListTile(
+              title: RaisedButton(
+                child: const Text('Places'),
+                  onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => PlacesDetails())))
             ),
             Divider(),
           ],
