@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'package:androidbluetoothserialapp/screens/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:provider/provider.dart';
 
 import './SelectBondedDevicePage.dart';
 import './ChatPage.dart';
+import 'AuthBloc.dart';
+import 'Login.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -18,8 +22,8 @@ class MainPage extends StatefulWidget {
   await Firebase.initializeApp();
 }*/
 
-
 class _MainPage extends State<MainPage> {
+  StreamSubscription<User> loginStateSubScription;
   BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 
   String _address = "...";
@@ -31,7 +35,18 @@ class _MainPage extends State<MainPage> {
 
   @override
   void initState() {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    loginStateSubScription = authBloc.currentUser.listen((fbUser){
+      if (fbUser == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => Login(),
+          ),
+        );
+      }
+    });
     super.initState();
+
 
     // Get current state
     FlutterBluetoothSerial.instance.state.then((state) {
@@ -78,6 +93,7 @@ class _MainPage extends State<MainPage> {
 
   @override
   void dispose() {
+    loginStateSubScription.cancel();
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
     _discoverableTimeoutTimer?.cancel();
     super.dispose();
@@ -85,6 +101,7 @@ class _MainPage extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(' Covid-19 Contact Tracing  '),
@@ -93,6 +110,34 @@ class _MainPage extends State<MainPage> {
         child: ListView(
           children: <Widget>[
             Divider(),
+            ListTile(
+              title: StreamBuilder<User>(
+                stream: authBloc.currentUser,
+                builder: (context, snapshot) {
+                  if(!snapshot.hasData) return CircularProgressIndicator();
+                  print(snapshot.data.photoURL);
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(snapshot.data.displayName, style: TextStyle(fontSize: 35.0)),
+                      SizedBox(height: 100.0),
+                      CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(snapshot.data.photoURL.replaceFirst('s96', 's400')),
+                        radius: 60.0,
+                      ),
+                      SizedBox(
+                        height: 100.0,
+                      ),
+                      SignInButton(Buttons.Google,
+                          text: 'Sign Out of Google',
+                          onPressed: () => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => authBloc.logout())))
+                    ],
+                  );
+                }
+              ),
+            ),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
@@ -105,21 +150,20 @@ class _MainPage extends State<MainPage> {
                   else
                     await FlutterBluetoothSerial.instance.requestDisable();
                 }
+
                 future().then((_) {
                   setState(() {});
                 });
               },
             ),
             Divider(),
-
             ListTile(title: const Text('Bluetooth devices')),
-
             ListTile(
               title: RaisedButton(
                 child: const Text('Connect and Send Contact Information'),
                 onPressed: () async {
                   final BluetoothDevice selectedDevice =
-                  await Navigator.of(context).push(
+                      await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
                         return SelectBondedDevicePage(checkAvailability: false);
@@ -151,6 +195,4 @@ class _MainPage extends State<MainPage> {
       ),
     );
   }
-
-
 }

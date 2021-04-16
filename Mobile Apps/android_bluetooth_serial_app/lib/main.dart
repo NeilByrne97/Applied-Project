@@ -1,5 +1,7 @@
+import 'package:androidbluetoothserialapp/AuthBloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './Login.dart';
 
@@ -12,12 +14,17 @@ void main() async {
 class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.blue,
-        accentColor: Colors.cyan
-    );
-    return MaterialApp(home: Login()
+    return Provider(
+      create: (context) => AuthBloc(),
+      child: MaterialApp(
+        title: 'Contact Tracer',
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Login(),
+      ),
     );
   }
 }
