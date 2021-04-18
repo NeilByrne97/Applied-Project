@@ -17,6 +17,7 @@ class PlacesDetails extends StatefulWidget {
 }
 class _PlacesDetailsState extends State<PlacesDetails> {
   String name, formattedAddress, formattedPhoneNumber, website, photos;
+  String placeID;
 
   getName(name) {
     this.name = name;
@@ -59,7 +60,6 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                 controller: listScrollController,
                 padding: const EdgeInsets.all(12.0),
                 itemBuilder: (context, index) {
-                  //getIt();
                   return StreamBuilder<QuerySnapshot>(
                     stream: collection.snapshots(),
                     builder: (BuildContext context,
@@ -75,21 +75,16 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                             children: snapshot.data.docs
                                 .map((DocumentSnapshot document) {
                                   String doc = document.toString();
+                                  print("Doc is " + doc);
                                   getPlace(doc);
+                                  print(name);
+                                  print(formattedAddress);
+                                  print(formattedPhoneNumber);
+                                  print(website);
                               return new ListTile(
-                                  title: new Text(places.),
-                                  subtitle: new Text("Phone Number: " + document['phoneNumber'] + "\nEmail: "  + document['email']),
-                                  onTap: (){
-                                    firstNameField.text = document['firstName'];
-                                    lastNameField.text = document['lastName'];
-                                    phoneNumberField.text = document['phoneNumber'];
-                                    emailField.text = document['email'];
-                                    getFirstName(document['firstName']);
-                                    getLastName(document['lastName']);
-                                    getPhoneNumber(document['phoneNumber']);
-                                    getEmail(document['email']);
-                                    print(document['firstName'] + " " + document['lastName']);
-                                  }
+                                  title: new Text(getName(name)),
+                                  subtitle: new Text(getFormattedAddress(formattedAddress) + "\n" + getFormattedPhoneNumber(formattedPhoneNumber) + "\n" + getWebsite(website)),
+
                               );
                             }).toList(),
                           );
@@ -104,31 +99,30 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     );
   }
 
+  getPlace(String placeID) async{
 
+    final places = new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
+    String place = "ChIJ_aKF2fqWW0gRDLLSSGNL_hc";
+
+    PlacesDetailsResponse response = await places.getDetailsByPlaceId(place);
+
+    name = response.result.name;
+    formattedAddress = response.result.formattedAddress;
+    formattedPhoneNumber = response.result.formattedPhoneNumber;
+    website = response.result.website;
+
+    print("Future " + name);
+    print("Future " + formattedAddress);
+    print("Future " + formattedPhoneNumber);
+    print("Future " + website);
+
+
+    return response;
+
+  }
 }
 
 
-final places = GoogleMapsPlaces(apiKey: Platform.environment['AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc']);
-Future<PlacesDetailsResponse> getPlace(String placeID) async{
-
-  final places = new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
-
-  PlacesDetailsResponse response = await places.getDetailsByPlaceId(placeID);
-
-  name = response.result.name;
-  String formattedAddress = response.result.formattedAddress;
-  String formattedPhoneNumber = response.result.formattedPhoneNumber;
-  String website = response.result.website;
-
-  print(response.result.name);
-  print(response.result.formattedAddress);
-  print(response.result.formattedPhoneNumber);
-  print(response.result.website);
-  print(response.result.photos);
-
-  return response;
-
-}
 
 
 
