@@ -6,6 +6,9 @@ import 'package:androidbluetoothserialapp/Places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:google_maps_webservice/places.dart';
+
+import 'MainPage.dart';
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
@@ -63,21 +66,50 @@ class _ChatPage extends State<ChatPage> {
 
   bool isDisconnecting = false;
 
-  CollectionReference collection =
+  CollectionReference contactsCollection =
       FirebaseFirestore.instance.collection('Contacts');
 
+  CollectionReference placesCollection =
+  FirebaseFirestore.instance.collection('Places');
+
   Future fetchDetails() async {
-    collection.get().then((querySnapshot) {
+    contactsCollection.get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
       });
     });
   }
 
+  void _addPlaceID(String placeID) async {
+    final places =
+    new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
+    //String place = "ChIJ_aKF2fqWW0gRDLLSSGNL_hc";
+
+    PlacesDetailsResponse response = await places.getDetailsByPlaceId(placeID);
+
+    String name = response.result.name;
+    String formattedAddress = response.result.formattedAddress;
+    String formattedPhoneNumber = response.result.formattedPhoneNumber;
+    String website = response.result.website;
+
+    try {
+      await placesCollection.doc(name).set({
+        'name': name,
+        'formattedAddress': formattedAddress,
+        'formattedPhoneNumber': formattedPhoneNumber,
+        'website' : website,
+        'placeID' : placeID,
+      });
+      getCollection(); // Update the list displayed
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void _create() async {
     String docName = lastName + " " + firstName;
     try {
-      await collection.doc(docName).set({
+      await contactsCollection.doc(docName).set({
         'firstName': firstName,
         'lastName': lastName,
         'phoneNumber': phoneNumber,
@@ -92,7 +124,7 @@ class _ChatPage extends State<ChatPage> {
   void _update() async {
     String docName = lastNameField.text + " " + firstNameField.text;
     try {
-      collection.doc(docName).update({
+      contactsCollection.doc(docName).update({
         'firstName': firstNameField.text,
         'lastName': lastNameField.text,
         'phoneNumber': phoneNumberField.text,
@@ -108,7 +140,7 @@ class _ChatPage extends State<ChatPage> {
   void _delete() async {
     String docName = lastNameField.text + " " + firstNameField.text;
     try {
-      collection.doc(docName).delete();
+      contactsCollection.doc(docName).delete();
       firstNameField.text = "";
       lastNameField.text = "";
       phoneNumberField.text = "";
@@ -193,21 +225,32 @@ class _ChatPage extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: (isConnecting
-            ? Text('Connecting chat to ' + widget.server.name + '...')
-            : isConnected
-                ? Text('Connected with ' + widget.server.name)
-                : Text('Chat log with ' + widget.server.name)),
-        leading: GestureDetector(
-          onTap: () {
-            _getPlaceID();
-          },
-          child: Icon(
-            Icons.map_rounded, // add custom icons also
+          title: (isConnecting
+              ? Text('Connecting chat to ' + widget.server.name + '...')
+              : isConnected
+                  ? Text('Connected with ' + widget.server.name)
+                  : Text('Chat log with ' + widget.server.name)),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
+            },
+            child: Icon(
+              Icons.arrow_back, // add custom icons also
+            ),
           ),
-        ),
-      ),
-
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _getPlaceID();
+                  },
+                  child: Icon(
+                    Icons.map_rounded, // add custom icons also
+                  ),
+                )),
+          ]),
       body: SafeArea(
           child: Column(
         children: <Widget>[
@@ -346,7 +389,7 @@ class _ChatPage extends State<ChatPage> {
                 itemBuilder: (context, index) {
                   //getIt();
                   return StreamBuilder<QuerySnapshot>(
-                    stream: collection.snapshots(),
+                    stream: contactsCollection.snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError)
@@ -394,7 +437,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void getCollection() {
-    collection.get().then((QuerySnapshot querySnapshot) {
+    contactsCollection.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
         print(documentSnapshot.data().toString());
       });
@@ -425,11 +468,12 @@ class _ChatPage extends State<ChatPage> {
         }
       }
     }
-    String espUrl = "";
+    String espPlaceID = "";
     // Create message if there is new line character
     String dataString = String.fromCharCodes(buffer);
-    espUrl += dataString;
-    print("Message is " + espUrl);
+    espPlaceID += dataString;
+    print("Message is " + espPlaceID);
+    _addPlaceID(espPlaceID);
     int index = buffer.indexOf(13);
     if (~index != 0) {
       setState(() {
@@ -587,7 +631,6 @@ class _ChatPage extends State<ChatPage> {
     );
   }
 
-
   Future<void> _getPlaceID() async {
     return showDialog<void>(
       context: context,
@@ -606,7 +649,8 @@ class _ChatPage extends State<ChatPage> {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                _sendMessage("PlaceID");
+                _sendMessage("placeID");
+                Navigator.of(context).pop(); // Close dialog box
               },
             ),
             TextButton(
@@ -620,5 +664,4 @@ class _ChatPage extends State<ChatPage> {
       },
     );
   }
-
 }

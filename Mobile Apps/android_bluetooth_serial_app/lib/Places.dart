@@ -10,6 +10,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_place/google_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'MainPage.dart';
+
 class PlacesDetails extends StatefulWidget {
   final String apiKey = 'AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc';
 
@@ -60,6 +62,15 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     return Scaffold(
         appBar: AppBar(
           title: Text(' Places You\'ve Been  '),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MainPage()));
+            },
+            child: Icon(
+              Icons.arrow_back, // add custom icons also
+            ),
+          ),
         ),
         body: Center(
           child: Flexible(

@@ -61,7 +61,6 @@ void loop() {
   }
   if (SerialBT.available()) {
     String infoString=SerialBT.readString();
-    SerialBT.print("Greetings from ESP32");
     convertString(infoString);
   }
   delay(20);  
@@ -94,6 +93,10 @@ void convertString(String infoString){
     //printf("%s\n", token);
     token = strtok(NULL, "-"); 
   }
+      if(firstName == "placeID"){
+       SerialBT.print("ChIJK3fd2XoxWUgRBB22NLqO2Ss");
+    }
+    
       Serial.println("First name is " + firstName);
       Serial.println("Last name is " + lastName);
       Serial.println("Phone Number is " + phoneNumber);
