@@ -32,9 +32,19 @@
             <td>Last Name </td>
             <td>Phone Number </td>
             <td>Email </td>
+            <td>Timestamp</td> 
+            <td> Action </td>
         </tr>
     
     </table>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
 </div>
     <div *ngFor = "let contact of contacts  | filter: searchText" style="padding-left: 5%;padding-right: 5%" >
        
@@ -44,11 +54,11 @@
                 <td>{{contact.last_name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.email}}</td>
-                <td>{{contact.timestamp}}</td>
-                <th>
+                <td>{{contact.timestamp | date:'dd-MM-yyyy'}}</td>
+                <td>
                     <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
-                    <input type= "button" (click) = "updateContact(contact._id)" value = "Insert" class = "btn btn-info">
-               </th> 
+                    
+               </td> 
              </tr>
         </table>
 

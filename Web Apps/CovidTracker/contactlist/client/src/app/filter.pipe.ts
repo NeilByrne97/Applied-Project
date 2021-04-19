@@ -15,7 +15,7 @@ export class FilterPipe implements PipeTransform {
    searchText = searchText.toLocaleLowerCase();
    // console.log(items)
 
-    return  items.filter(o => { return o.email.toLocaleLowerCase().includes(searchText)
+    return  items.filter(o => { return o.timestamp.toLocaleLowerCase().includes(searchText)
     });
    
   }

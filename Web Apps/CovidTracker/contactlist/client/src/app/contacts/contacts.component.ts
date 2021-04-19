@@ -3,7 +3,8 @@ import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 import { ContactService} from '../contact.service';
 import { Contact} from '../contact';
 import {EmailService} from '../services/email.service'
-
+import {DatepickerOverviewExample} from '../services/datepicker'
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-contacts',
@@ -22,14 +23,12 @@ export class ContactsComponent implements OnInit {
   timestamp: Date; 
 
 
-  constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService) { }
+  constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService,private dateService:DatepickerOverviewExample) { }
 
   searchText: string; 
   title = 'nodeMailerApp';
   nodeMailerForm :FormGroup;
-
-
- 
+  now = new Date(); 
 
   sendMail(){
     alert("jjj");
@@ -41,13 +40,13 @@ export class ContactsComponent implements OnInit {
       console.log(data);
     })
   }
-
   addContact(){
     const newContact ={
       first_name: this.first_name,
       last_name: this.last_name,
       phone: this.phone,
-      email: this.email
+      email: this.email,
+      timestamp: this.now.toUTCString()
     }
     this.contactService.addContact(newContact)
     .subscribe(contact =>{
@@ -58,10 +57,6 @@ export class ContactsComponent implements OnInit {
         this.contacts = contacts);
     });
   }
-
-
-
-
   deleteContact(id:any){
     var contacts = this.contacts;
     this.contactService.deleteContact(id)

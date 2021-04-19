@@ -11,7 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './filter.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AngularMaterialModule} from './angular-material.module';
-
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import {AngularMaterialModule} from './angular-material.module';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    MatDatepickerModule
   ],
   providers: [
     ContactsComponent,

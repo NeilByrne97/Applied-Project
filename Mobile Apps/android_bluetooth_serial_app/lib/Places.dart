@@ -66,6 +66,7 @@ class _PlacesDetailsState extends State<PlacesDetails> {
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MainPage()));
+              getPlace();
             },
             child: Icon(
               Icons.arrow_back, // add custom icons also
@@ -121,11 +122,11 @@ class _PlacesDetailsState extends State<PlacesDetails> {
         ));
   }
 
-  getPlace(String placeID) async {
+  getPlace() async {
     final places =
         new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
+    String apiKey = "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc";
     String place = "ChIJ_aKF2fqWW0gRDLLSSGNL_hc";
-
     PlacesDetailsResponse response = await places.getDetailsByPlaceId(place);
 
     name = response.result.name;
@@ -133,11 +134,18 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     formattedPhoneNumber = response.result.formattedPhoneNumber;
     website = response.result.website;
 
-    var photo = response.result.photos;
+    var photoRef = response.result.photos[0].photoReference;
+    print(photoRef);
 
-    return response;
+
+    final baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
+    final maxWidth = "400";
+    final maxHeight = "200";
+    final url = "$baseUrl?maxwidth=$maxWidth&maxheight=$maxHeight&photoreference=$photoRef&key=$apiKey";
+
+    https://maps.googleapis.com/maps/api/place/photo?maxwidth=$400&maxheight=$200&photoreference=$ATtYBwL-RF_YV0Ry5VPZhtpMTTY2Kd2nMtwh-XUYMqi74cF8D65ty6HYffJw1dhAHud4jqJ26bya419iD5_eP0J5iSyIDLcp7Ksa_inIlbvxLb5ypvaIe0Z3ssbBDf5nt9b_1lP6eLzE3Z2_Jkmu6nTDeqKv0wyHH2g2vCVpEAfDqF3UHbNh&key=$AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc
   }
-
+  https://maps.googleapis.com/maps/api/place/photo?maxwidth=$400&maxheight=$200&photoreference=$ATtYBwL-RF_YV0Ry5VPZhtpMTTY2Kd2nMtwh-XUYMqi74cF8D65ty6HYffJw1dhAHud4jqJ26bya419iD5_eP0J5iSyIDLcp7Ksa_inIlbvxLb5ypvaIe0Z3ssbBDf5nt9b_1lP6eLzE3Z2_Jkmu6nTDeqKv0wyHH2g2vCVpEAfDqF3UHbNh&key=$AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc
   Future<void> _contactAlert() async {
     return showDialog<void>(
       context: context,
