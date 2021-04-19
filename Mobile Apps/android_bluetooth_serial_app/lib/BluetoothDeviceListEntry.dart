@@ -41,6 +41,8 @@ class BluetoothDeviceListEntry extends ListTile {
                   ? Icon(Icons.link)
                   : Container(width: 0, height: 0),
             ],
+
+
           ),
         );
 

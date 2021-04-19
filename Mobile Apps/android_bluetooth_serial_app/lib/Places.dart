@@ -4,9 +4,11 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_place/google_place.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PlacesDetails extends StatefulWidget {
 
@@ -18,6 +20,11 @@ class PlacesDetails extends StatefulWidget {
 class _PlacesDetailsState extends State<PlacesDetails> {
   String name, formattedAddress, formattedPhoneNumber, website, photos;
   String placeID;
+
+  final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+
+  final String number = "123456789";
+  final String email = "dancamdev@example.com";
 
   getName(name) {
     this.name = name;
@@ -40,7 +47,6 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   }
 
   final ScrollController listScrollController = new ScrollController();
-
   CollectionReference collection = FirebaseFirestore.instance.collection('Places');
   Future fetchDetails() async {
     collection.get().then((querySnapshot) {
@@ -53,6 +59,9 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text(' Places You\'ve Been  '),
+        ),
         body: Center(
           child: Flexible(
               flex: 24,
@@ -74,17 +83,16 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                             shrinkWrap: true,
                             children: snapshot.data.docs
                                 .map((DocumentSnapshot document) {
-                                  String doc = document.toString();
-                                  print("Doc is " + doc);
-                                  getPlace(doc);
-                                  print(name);
-                                  print(formattedAddress);
-                                  print(formattedPhoneNumber);
-                                  print(website);
                               return new ListTile(
-                                  title: new Text(getName(name)),
-                                  subtitle: new Text(getFormattedAddress(formattedAddress) + "\n" + getFormattedPhoneNumber(formattedPhoneNumber) + "\n" + getWebsite(website)),
-
+                                title: new Text(document['name']),
+                                subtitle: new Text(document['formattedAddress'] + "\n" + document['formattedPhoneNumber']  + "\n" + document['website']),
+                                onTap: (){
+                                  name = document['name'];
+                                  formattedPhoneNumber = document['formattedPhoneNumber'];
+                                  getName(document['name']);
+                                  getFormattedPhoneNumber(document['formattedPhoneNumber']);
+                                  _contactAlert();
+                                },
                               );
                             }).toList(),
                           );
@@ -111,18 +119,58 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     formattedPhoneNumber = response.result.formattedPhoneNumber;
     website = response.result.website;
 
-    print("Future " + name);
-    print("Future " + formattedAddress);
-    print("Future " + formattedPhoneNumber);
-    print("Future " + website);
-
+    var photo = response.result.photos;
 
     return response;
 
   }
+
+  Future<void> _contactAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Contact ' + name),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('How would you like to contact ' + name + "?"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Call'),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close dialog box
+                _service.call(number);
+              },
+            ),
+            TextButton(
+              child: Text('SMS'),
+              onPressed: () {
+                _service.sendSms(number);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
 
 
+class CallsAndMessagesService {
+  void call(String number) => launch("tel:$number");
+  void sendSms(String number) => launch("sms:$number");
+  void sendEmail(String email) => launch("mailto:$email");
+}
 
-
+GetIt locator = GetIt();
+void setupLocator() {
+  locator.registerSingleton(CallsAndMessagesService());
+}
 

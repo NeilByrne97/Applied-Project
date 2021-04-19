@@ -54,9 +54,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
       });
     });
   }
-
-  // @TODO . One day there should be `_pairDevice` on long tap on something... ;)
-
+  
   @override
   void dispose() {
     // Avoid memory leak (`setState` after dispose) and cancel discovery
