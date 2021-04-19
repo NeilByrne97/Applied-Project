@@ -38,7 +38,7 @@ class _MainPage extends State<MainPage> {
   @override
   void initState() {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
-    loginStateSubScription = authBloc.currentUser.listen((fbUser){
+    loginStateSubScription = authBloc.currentUser.listen((fbUser) {
       if (fbUser == null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -48,7 +48,6 @@ class _MainPage extends State<MainPage> {
       }
     });
     super.initState();
-
 
     // Get current state
     FlutterBluetoothSerial.instance.state.then((state) {
@@ -114,31 +113,32 @@ class _MainPage extends State<MainPage> {
             Divider(),
             ListTile(
               title: StreamBuilder<User>(
-                stream: authBloc.currentUser,
-                builder: (context, snapshot) {
-                  if(!snapshot.hasData) return CircularProgressIndicator();
-                  print(snapshot.data.photoURL);
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(snapshot.data.displayName, style: TextStyle(fontSize: 35.0)),
-                      SizedBox(height: 100.0),
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(snapshot.data.photoURL.replaceFirst('s96', 's400')),
-                        radius: 60.0,
-                      ),
-                      SizedBox(
-                        height: 100.0,
-                      ),
-                      SignInButton(Buttons.Google,
-                          text: 'Sign Out of Google',
-                          onPressed: () => Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => authBloc.logout())))
-                    ],
-                  );
-                }
-              ),
+                  stream: authBloc.currentUser,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return CircularProgressIndicator();
+                    print(snapshot.data.photoURL);
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(snapshot.data.displayName,
+                            style: TextStyle(fontSize: 35.0)),
+                        SizedBox(height: 100.0),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(snapshot.data.photoURL
+                              .replaceFirst('s96', 's400')),
+                          radius: 60.0,
+                        ),
+                        SizedBox(
+                          height: 100.0,
+                        ),
+                        SignInButton(Buttons.Google,
+                            text: 'Sign Out of Google',
+                            onPressed: () => Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => authBloc.logout())))
+                      ],
+                    );
+                  }),
             ),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
@@ -182,11 +182,11 @@ class _MainPage extends State<MainPage> {
               ),
             ),
             ListTile(
-              title: RaisedButton(
-                child: const Text('Places'),
-                  onPressed: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => PlacesDetails())))
-            ),
+                title: RaisedButton(
+                    child: const Text('Places'),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => PlacesDetails())))),
             Divider(),
           ],
         ),

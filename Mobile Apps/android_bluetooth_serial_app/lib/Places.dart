@@ -11,20 +11,17 @@ import 'package:google_place/google_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PlacesDetails extends StatefulWidget {
-
   final String apiKey = 'AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc';
+
   @override
   _PlacesDetailsState createState() => _PlacesDetailsState();
-
 }
+
 class _PlacesDetailsState extends State<PlacesDetails> {
   String name, formattedAddress, formattedPhoneNumber, website, photos;
   String placeID;
 
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
-
-  final String number = "123456789";
-  final String email = "dancamdev@example.com";
 
   getName(name) {
     this.name = name;
@@ -47,7 +44,9 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   }
 
   final ScrollController listScrollController = new ScrollController();
-  CollectionReference collection = FirebaseFirestore.instance.collection('Places');
+  CollectionReference collection =
+      FirebaseFirestore.instance.collection('Places');
+
   Future fetchDetails() async {
     collection.get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
@@ -60,7 +59,7 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(' Places You\'ve Been  '),
+          title: Text(' Places You\'ve Been  '),
         ),
         body: Center(
           child: Flexible(
@@ -85,12 +84,19 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                                 .map((DocumentSnapshot document) {
                               return new ListTile(
                                 title: new Text(document['name']),
-                                subtitle: new Text(document['formattedAddress'] + "\n" + document['formattedPhoneNumber']  + "\n" + document['website']),
-                                onTap: (){
+                                subtitle: new Text(
+                                    document['formattedAddress'] +
+                                        "\n" +
+                                        document['formattedPhoneNumber'] +
+                                        "\n" +
+                                        document['website']),
+                                onTap: () {
                                   name = document['name'];
-                                  formattedPhoneNumber = document['formattedPhoneNumber'];
+                                  formattedPhoneNumber =
+                                      document['formattedPhoneNumber'];
                                   getName(document['name']);
-                                  getFormattedPhoneNumber(document['formattedPhoneNumber']);
+                                  getFormattedPhoneNumber(
+                                      document['formattedPhoneNumber']);
                                   _contactAlert();
                                 },
                               );
@@ -101,15 +107,12 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                   );
                 },
               )),
-
-        )
-
-    );
+        ));
   }
 
-  getPlace(String placeID) async{
-
-    final places = new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
+  getPlace(String placeID) async {
+    final places =
+        new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
     String place = "ChIJ_aKF2fqWW0gRDLLSSGNL_hc";
 
     PlacesDetailsResponse response = await places.getDetailsByPlaceId(place);
@@ -122,7 +125,6 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     var photo = response.result.photos;
 
     return response;
-
   }
 
   Future<void> _contactAlert() async {
@@ -143,14 +145,14 @@ class _PlacesDetailsState extends State<PlacesDetails> {
             TextButton(
               child: Text('Call'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
-                _service.call(number);
+                Navigator.of(context).pop(); // Close dialog box
+                _service.call(formattedPhoneNumber);
               },
             ),
             TextButton(
               child: Text('SMS'),
               onPressed: () {
-                _service.sendSms(number);
+                _service.sendSms(formattedPhoneNumber);
               },
             ),
           ],
@@ -158,19 +160,18 @@ class _PlacesDetailsState extends State<PlacesDetails> {
       },
     );
   }
-
-
 }
-
 
 class CallsAndMessagesService {
   void call(String number) => launch("tel:$number");
+
   void sendSms(String number) => launch("sms:$number");
+
   void sendEmail(String email) => launch("mailto:$email");
 }
 
 GetIt locator = GetIt();
+
 void setupLocator() {
   locator.registerSingleton(CallsAndMessagesService());
 }
-

@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
+import 'package:androidbluetoothserialapp/Places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
+
   const ChatPage({this.server});
 
   @override
@@ -52,17 +54,18 @@ class _ChatPage extends State<ChatPage> {
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-  new TextEditingController();
+      new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
+
   bool get isConnected => connection != null && connection.isConnected;
 
   bool isDisconnecting = false;
 
+  CollectionReference collection =
+      FirebaseFirestore.instance.collection('Contacts');
 
-
-  CollectionReference collection = FirebaseFirestore.instance.collection('Contacts');
   Future fetchDetails() async {
     collection.get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
@@ -164,7 +167,6 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -191,20 +193,31 @@ class _ChatPage extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: (isConnecting
-              ? Text('Connecting chat to ' + widget.server.name + '...')
-              : isConnected
-                  ? Text('Connected with ' + widget.server.name)
-                  : Text('Chat log with ' + widget.server.name))),
+        title: (isConnecting
+            ? Text('Connecting chat to ' + widget.server.name + '...')
+            : isConnected
+                ? Text('Connected with ' + widget.server.name)
+                : Text('Chat log with ' + widget.server.name)),
+        leading: GestureDetector(
+          onTap: () {
+            _getPlaceID();
+          },
+          child: Icon(
+            Icons.map_rounded, // add custom icons also
+          ),
+        ),
+      ),
+
       body: SafeArea(
           child: Column(
         children: <Widget>[
-              Flexible( // Display sent messages
-                child: ListView(
-                    padding: const EdgeInsets.all(12.0),
-                    controller: listScrollController,
-                    children: list),
-              ),
+          Flexible(
+            // Display sent messages
+            child: ListView(
+                padding: const EdgeInsets.all(12.0),
+                controller: listScrollController,
+                children: list),
+          ),
 
           Row(
             children: <Widget>[
@@ -347,20 +360,27 @@ class _ChatPage extends State<ChatPage> {
                             children: snapshot.data.docs
                                 .map((DocumentSnapshot document) {
                               return new ListTile(
-                                title: new Text(document['firstName'] + " " + document['lastName']),
-                                subtitle: new Text("Phone Number: " + document['phoneNumber'] + "\nEmail: "  + document['email']),
-                                onTap: (){
-                                  firstNameField.text = document['firstName'];
-                                  lastNameField.text = document['lastName'];
-                                  phoneNumberField.text = document['phoneNumber'];
-                                  emailField.text = document['email'];
-                                  getFirstName(document['firstName']);
-                                  getLastName(document['lastName']);
-                                  getPhoneNumber(document['phoneNumber']);
-                                  getEmail(document['email']);
-                                  print(document['firstName'] + " " + document['lastName']);
-                                }
-                              );
+                                  title: new Text(document['firstName'] +
+                                      " " +
+                                      document['lastName']),
+                                  subtitle: new Text("Phone Number: " +
+                                      document['phoneNumber'] +
+                                      "\nEmail: " +
+                                      document['email']),
+                                  onTap: () {
+                                    firstNameField.text = document['firstName'];
+                                    lastNameField.text = document['lastName'];
+                                    phoneNumberField.text =
+                                        document['phoneNumber'];
+                                    emailField.text = document['email'];
+                                    getFirstName(document['firstName']);
+                                    getLastName(document['lastName']);
+                                    getPhoneNumber(document['phoneNumber']);
+                                    getEmail(document['email']);
+                                    print(document['firstName'] +
+                                        " " +
+                                        document['lastName']);
+                                  });
                             }).toList(),
                           );
                       }
@@ -374,7 +394,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void getCollection() {
-   collection.get().then((QuerySnapshot querySnapshot) {
+    collection.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
         print(documentSnapshot.data().toString());
       });
@@ -480,7 +500,7 @@ class _ChatPage extends State<ChatPage> {
             TextButton(
               child: Text('Continue'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
+                Navigator.of(context).pop(); // Close dialog box
               },
             ),
           ],
@@ -488,7 +508,6 @@ class _ChatPage extends State<ChatPage> {
       },
     );
   }
-
 
   Future<void> _deleteAlert() async {
     return showDialog<void>(
@@ -500,7 +519,10 @@ class _ChatPage extends State<ChatPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This will permanently delete ' + firstNameField.text + " " + lastNameField.text),
+                Text('This will permanently delete ' +
+                    firstNameField.text +
+                    " " +
+                    lastNameField.text),
                 Text('Are you sure?'),
               ],
             ),
@@ -509,14 +531,14 @@ class _ChatPage extends State<ChatPage> {
             TextButton(
               child: Text('Delete'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
+                Navigator.of(context).pop(); // Close dialog box
                 _delete();
               },
             ),
             TextButton(
               child: Text('Cancel'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
+                Navigator.of(context).pop(); // Close dialog box
               },
             ),
           ],
@@ -535,7 +557,10 @@ class _ChatPage extends State<ChatPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This will permanently update ' + firstNameField.text + " " + lastNameField.text),
+                Text('This will permanently update ' +
+                    firstNameField.text +
+                    " " +
+                    lastNameField.text),
                 Text('Phone Number: ' + phoneNumberField.text),
                 Text('Email: ' + emailField.text),
                 Text('Are you sure?'),
@@ -546,14 +571,48 @@ class _ChatPage extends State<ChatPage> {
             TextButton(
               child: Text('Update'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
+                Navigator.of(context).pop(); // Close dialog box
                 _update();
               },
             ),
             TextButton(
               child: Text('Cancel'),
               onPressed: () {
-                Navigator.of(context).pop();  // Close dialog box
+                Navigator.of(context).pop(); // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  Future<void> _getPlaceID() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Contact Information'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Would you like to receive the Contact information?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                _sendMessage("PlaceID");
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog box
               },
             ),
           ],
