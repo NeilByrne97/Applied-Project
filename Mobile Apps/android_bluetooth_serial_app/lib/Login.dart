@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'AuthBloc.dart';
 import 'MainPage.dart';
+import 'SignUp.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -23,7 +25,8 @@ class _LoginState extends State<Login> {
   Future<void> _createUser() async {
     try {
       UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       print("Error: $e");
     } catch (e) {
@@ -34,7 +37,8 @@ class _LoginState extends State<Login> {
   Future<void> _login() async {
     try {
       UserCredential userCredential =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       print("Error: $e");
     } catch (e) {
@@ -66,35 +70,120 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
-
-
     return Scaffold(
-        body: Center(
-            child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextField(
-          onChanged: (value){
-            _email = value;
-          },
-          decoration: InputDecoration(hintText: "Enter Email..."),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              FlutterLogo(
+                size: 50.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Text(
+                  "Login Here",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.90,
+                child: Form(
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: "Email"),
+                        validator: MultiValidator([
+                          RequiredValidator(
+                              errorText: "This Field Is Required"),
+                          EmailValidator(errorText: "Invalid Email Address"),
+                        ]),
+                        onChanged: (val) {
+                          _email = val;
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Password"),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: "Password Is Required"),
+                            MinLengthValidator(6,
+                                errorText: "Minimum 6 Characters Required"),
+                          ]),
+                          onChanged: (val) {
+                            _password = val;
+                          },
+                        ),
+                      ),
+                      RaisedButton(
+                        // passing an additional context parameter to show dialog boxs
+                        onPressed: _login,
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        child: Text(
+                          "Login",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SignInButton(
+                  Buttons.Google, onPressed: () => authBloc.loginGoogle()),
+              InkWell(
+                onTap: () {
+                  // send to login screen
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SignUp()));
+                },
+                child: Text(
+                  "Sign Up Here",
+                ),
+              ),
+            ],
+          ),
         ),
-        TextField(
-          onChanged: (value){
-            _password = value;
-          },
-          decoration: InputDecoration(hintText: "Enter Password..."),
-        ),
-        MaterialButton(
-            onPressed: _login,
-            child: Text("Login"),
-        ),
-        MaterialButton(
-            onPressed: _createUser,
-            child: Text("Create New Account")
-        ),
-        SignInButton(Buttons.Google, onPressed: () => authBloc.loginGoogle()),
-      ],
-    )));
+      ),
+    );
   }
 }
+//     return Scaffold(
+//         body: Center(
+//             child: Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         TextField(
+//           onChanged: (value){
+//             _email = value;
+//           },
+//           decoration: InputDecoration(hintText: "Enter Email..."),
+//         ),
+//         TextField(
+//           onChanged: (value){
+//             _password = value;
+//           },
+//           decoration: InputDecoration(hintText: "Enter Password..."),
+//         ),
+//         MaterialButton(
+//             onPressed: _login,
+//             child: Text("Login"),
+//         ),
+//         MaterialButton(
+//             onPressed: _createUser,
+//             child: Text("Create New Account")
+//         ),
+//         SignInButton(Buttons.Google, onPressed: () => authBloc.loginGoogle()),
+//       ],
+//     )));
+//   }
+// }
