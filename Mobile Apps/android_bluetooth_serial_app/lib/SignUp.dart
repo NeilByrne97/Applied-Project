@@ -55,6 +55,15 @@ class _SignUpState extends State<SignUp> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Text(
+                  "Contact Tracer",
+                  style: TextStyle(
+                    fontSize: 50.0,
+                  ),
+                ),
+              ),
               FlutterLogo(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.0),

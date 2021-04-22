@@ -4,6 +4,7 @@ import 'dart:core';
 import 'dart:typed_data';
 import 'package:androidbluetoothserialapp/Places.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -66,14 +67,16 @@ class _ChatPage extends State<ChatPage> {
 
   bool isDisconnecting = false;
 
-  CollectionReference contactsCollection =
-      FirebaseFirestore.instance.collection('Contacts');
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String uid;
+  CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('Users');
 
   CollectionReference placesCollection =
   FirebaseFirestore.instance.collection('Places');
 
   Future fetchDetails() async {
-    contactsCollection.get().then((querySnapshot) {
+    usersCollection.get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
       });
@@ -93,7 +96,7 @@ class _ChatPage extends State<ChatPage> {
     String website = response.result.website;
 
     try {
-      await placesCollection.doc(name).set({
+      await usersCollection.doc(uid).collection('Places').doc(name).set({
         'name': name,
         'formattedAddress': formattedAddress,
         'formattedPhoneNumber': formattedPhoneNumber,
@@ -106,10 +109,18 @@ class _ChatPage extends State<ChatPage> {
     }
   }
 
+  void _getUID() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    this.uid = uid;
+  }
+
   void _create() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
     String docName = lastName + " " + firstName;
     try {
-      await contactsCollection.doc(docName).set({
+      await usersCollection.doc(uid).collection('Contacts').doc(docName).set({
         'firstName': firstName,
         'lastName': lastName,
         'phoneNumber': phoneNumber,
@@ -124,7 +135,7 @@ class _ChatPage extends State<ChatPage> {
   void _update() async {
     String docName = lastNameField.text + " " + firstNameField.text;
     try {
-      contactsCollection.doc(docName).update({
+      usersCollection.doc(uid).collection('Contacts').doc(docName).update({
         'firstName': firstNameField.text,
         'lastName': lastNameField.text,
         'phoneNumber': phoneNumberField.text,
@@ -140,7 +151,7 @@ class _ChatPage extends State<ChatPage> {
   void _delete() async {
     String docName = lastNameField.text + " " + firstNameField.text;
     try {
-      contactsCollection.doc(docName).delete();
+      usersCollection.doc(uid).collection('Contacts').doc(docName).delete();
       firstNameField.text = "";
       lastNameField.text = "";
       phoneNumberField.text = "";
@@ -387,9 +398,9 @@ class _ChatPage extends State<ChatPage> {
                 controller: listScrollController,
                 padding: const EdgeInsets.all(12.0),
                 itemBuilder: (context, index) {
-                  //getIt();
+                  _getUID();
                   return StreamBuilder<QuerySnapshot>(
-                    stream: contactsCollection.snapshots(),
+                    stream: usersCollection.doc(uid).collection('Contacts').snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError)
@@ -437,7 +448,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   void getCollection() {
-    contactsCollection.get().then((QuerySnapshot querySnapshot) {
+    usersCollection.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
         print(documentSnapshot.data().toString());
       });

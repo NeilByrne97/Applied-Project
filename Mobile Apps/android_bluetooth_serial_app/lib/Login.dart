@@ -75,13 +75,22 @@ class _LoginState extends State<Login> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Text(
+                  "Contact Tracer",
+                  style: TextStyle(
+                    fontSize: 50.0,
+                  ),
+                ),
+              ),
               FlutterLogo(
                 size: 50.0,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
-                  "Login Here",
+                  "Login",
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -140,6 +149,9 @@ class _LoginState extends State<Login> {
               ),
               SignInButton(
                   Buttons.Google, onPressed: () => authBloc.loginGoogle()),
+              SizedBox(
+                height: 10.0,
+              ),
               InkWell(
                 onTap: () {
                   // send to login screen

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +24,8 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   String placeID;
 
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String uid;
 
   getName(name) {
     this.name = name;
@@ -45,15 +48,21 @@ class _PlacesDetailsState extends State<PlacesDetails> {
   }
 
   final ScrollController listScrollController = new ScrollController();
-  CollectionReference collection =
-      FirebaseFirestore.instance.collection('Places');
+  CollectionReference usersCollection =
+  FirebaseFirestore.instance.collection('Users');
 
   Future fetchDetails() async {
-    collection.get().then((querySnapshot) {
+    usersCollection.get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
       });
     });
+  }
+
+  void _getUID() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    this.uid = uid;
   }
 
   @override
@@ -79,8 +88,9 @@ class _PlacesDetailsState extends State<PlacesDetails> {
                 controller: listScrollController,
                 padding: const EdgeInsets.all(12.0),
                 itemBuilder: (context, index) {
+                  _getUID();
                   return StreamBuilder<QuerySnapshot>(
-                    stream: collection.snapshots(),
+                    stream: usersCollection.doc(uid).collection('Places').snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError)
