@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:google_place/google_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'MainPage.dart';
@@ -143,9 +142,8 @@ class _PlacesDetailsState extends State<PlacesDetails> {
     final maxHeight = "200";
     final url = "$baseUrl?maxwidth=$maxWidth&maxheight=$maxHeight&photoreference=$photoRef&key=$apiKey";
 
-    https://maps.googleapis.com/maps/api/place/photo?maxwidth=$400&maxheight=$200&photoreference=$ATtYBwL-RF_YV0Ry5VPZhtpMTTY2Kd2nMtwh-XUYMqi74cF8D65ty6HYffJw1dhAHud4jqJ26bya419iD5_eP0J5iSyIDLcp7Ksa_inIlbvxLb5ypvaIe0Z3ssbBDf5nt9b_1lP6eLzE3Z2_Jkmu6nTDeqKv0wyHH2g2vCVpEAfDqF3UHbNh&key=$AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc
+    //https://maps.googleapis.com/maps/api/place/photo?maxwidth=$400&maxheight=$200&photoreference=$ATtYBwL-RF_YV0Ry5VPZhtpMTTY2Kd2nMtwh-XUYMqi74cF8D65ty6HYffJw1dhAHud4jqJ26bya419iD5_eP0J5iSyIDLcp7Ksa_inIlbvxLb5ypvaIe0Z3ssbBDf5nt9b_1lP6eLzE3Z2_Jkmu6nTDeqKv0wyHH2g2vCVpEAfDqF3UHbNh&key=$AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc
   }
-  https://maps.googleapis.com/maps/api/place/photo?maxwidth=$400&maxheight=$200&photoreference=$ATtYBwL-RF_YV0Ry5VPZhtpMTTY2Kd2nMtwh-XUYMqi74cF8D65ty6HYffJw1dhAHud4jqJ26bya419iD5_eP0J5iSyIDLcp7Ksa_inIlbvxLb5ypvaIe0Z3ssbBDf5nt9b_1lP6eLzE3Z2_Jkmu6nTDeqKv0wyHH2g2vCVpEAfDqF3UHbNh&key=$AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc
   Future<void> _contactAlert() async {
     return showDialog<void>(
       context: context,

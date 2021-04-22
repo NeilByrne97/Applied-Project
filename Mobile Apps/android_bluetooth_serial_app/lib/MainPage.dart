@@ -123,11 +123,11 @@ class _MainPage extends State<MainPage> {
                         Text(snapshot.data.displayName,
                             style: TextStyle(fontSize: 35.0)),
                         SizedBox(height: 100.0),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data.photoURL
-                              .replaceFirst('s96', 's400')),
-                          radius: 60.0,
-                        ),
+                        // CircleAvatar(
+                        //   backgroundImage: NetworkImage(snapshot.data.photoURL
+                        //       .replaceFirst('s96', 's400')),
+                        //   radius: 60.0,
+                        // ),
                         SizedBox(
                           height: 100.0,
                         ),
@@ -135,7 +135,12 @@ class _MainPage extends State<MainPage> {
                             text: 'Sign Out of Google',
                             onPressed: () => Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
-                                    builder: (context) => authBloc.logout())))
+                                    builder: (context) => authBloc.logout()))),
+                        MaterialButton(
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                            },
+                            child: Text("Sign out")),
                       ],
                     );
                   }),
