@@ -128,9 +128,9 @@ class _MainPage extends State<MainPage> {
                         //       .replaceFirst('s96', 's400')),
                         //   radius: 60.0,
                         // ),
-                        // SizedBox(
-                        //   height: 100.0,
-                        // ),
+                        SizedBox(
+                          height: 100.0,
+                        ),
                         SignInButton(Buttons.Google,
                             text: 'Sign Out of Google',
                             onPressed: () => Navigator.of(context)

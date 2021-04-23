@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'AuthBloc.dart';
+import 'EmailMainPage.dart';
 import 'MainPage.dart';
 import 'SignUp.dart';
 
@@ -21,6 +22,7 @@ class _LoginState extends State<Login> {
   StreamSubscription<User> loginStateSubScription;
   String _email;
   String _password;
+  bool singInWithEmail = false;
 
   Future<void> _createUser() async {
     try {
@@ -35,10 +37,15 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _login() async {
+    singInWithEmail = true;
     try {
       UserCredential userCredential =
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email, password: _password);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => EmailMainPage(),
+          ));
     } on FirebaseAuthException catch (e) {
       print("Error: $e");
     } catch (e) {

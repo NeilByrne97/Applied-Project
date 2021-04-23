@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -20,6 +21,14 @@ class _SignUpState extends State<SignUp> {
   StreamSubscription<User> loginStateSubScription;
   String _email;
   String _password;
+  String _firstName;
+  String _lastName;
+
+  String uid;
+  CollectionReference usersCollection =
+  FirebaseFirestore.instance.collection('Users');
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   void initState() {
@@ -40,6 +49,7 @@ class _SignUpState extends State<SignUp> {
       UserCredential userCredential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _email, password: _password);
+      _addCred();
     } on FirebaseAuthException catch (e) {
       print("Error: $e");
     } catch (e) {
@@ -47,6 +57,19 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  void _addCred() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    String docName = _lastName + " " + _firstName;
+    try {
+      await usersCollection.doc(uid).collection('Credentials').doc(docName).set({
+        'firstName': _firstName,
+        'lastName': _lastName,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
@@ -80,19 +103,56 @@ class _SignUpState extends State<SignUp> {
                   key: formkey,
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(), labelText: "Email"),
-                        validator: (_val) {
-                          if (_val.isEmpty) {
-                            return "Can't be empty";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChanged: (val) {
-                          _email = val;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(), labelText: "First Name"),
+                          validator: (_val) {
+                            if (_val.isEmpty) {
+                              return "Can't be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (val) {
+                            _firstName = val;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(), labelText: "Last Name"),
+                          validator: (_val) {
+                            if (_val.isEmpty) {
+                              return "Can't be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (val) {
+                            _lastName = val;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(), labelText: "Email"),
+                          validator: (_val) {
+                            if (_val.isEmpty) {
+                              return "Can't be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (val) {
+                            _email = val;
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15.0),
