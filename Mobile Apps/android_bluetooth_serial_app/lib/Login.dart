@@ -53,11 +53,13 @@ class _LoginState extends State<Login> {
     }
   }
 
-  @override
-  void initState() {
+  void googleLogin(){
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    authBloc.loginGoogle();
     loginStateSubScription = authBloc.currentUser.listen((fbUser) {
       if (fbUser != null) {
+        print("well");
+        print(fbUser);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => MainPage(),
@@ -65,6 +67,11 @@ class _LoginState extends State<Login> {
         );
       }
     });
+  }
+
+  @override
+  void initState() {
+
     super.initState();
   }
 
@@ -155,7 +162,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SignInButton(
-                  Buttons.Google, onPressed: () => authBloc.loginGoogle()),
+                  Buttons.Google, onPressed: () => googleLogin()),
               SizedBox(
                 height: 10.0,
               ),

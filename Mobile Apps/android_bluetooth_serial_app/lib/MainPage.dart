@@ -125,7 +125,6 @@ class _MainPage extends State<MainPage> {
                         SizedBox(height: 100.0),
                         CircleAvatar(
                           backgroundImage: (snapshot.data.photoURL == null) ?
-
                           NetworkImage("https://www.fillmurray.com/300/300") :
                           NetworkImage(snapshot.data.photoURL
                               .replaceFirst('s96', 's400')),

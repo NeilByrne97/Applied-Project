@@ -35,7 +35,7 @@ class _EmailMainPage extends State<EmailMainPage> {
   String firstName;
   String lastName;
   String fullName = "";
-  String avatar = "";
+  String avatar = "assets/Default.png";
 
   getFullName(fullName) {
     this.fullName = fullName;
@@ -44,14 +44,6 @@ class _EmailMainPage extends State<EmailMainPage> {
   getAvatar(avatar) {
     this.avatar = avatar;
   }
-
-  final Map<String, IconData> myIconCollection = {
-    'home': Icons.home,
-    'android': Icons.android,
-    'circle': Icons.account_circle_outlined,
-    'face': Icons.face_outlined,
-    'anchor': Icons.anchor_outlined,
-  };
 
   void getCollection() {
     _getUID();

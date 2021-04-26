@@ -43,15 +43,15 @@ class _SignUpState extends State<SignUp> {
 
   void initState() {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
-    loginStateSubScription = authBloc.currentUser.listen((fbUser) {
-      if (fbUser != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => MainPage(),
-          ),
-        );
-      }
-    });
+    // loginStateSubScription = authBloc.currentUser.listen((fbUser) {
+    //   if (fbUser != null) {
+    //     Navigator.of(context).pushReplacement(
+    //       MaterialPageRoute(
+    //         builder: (context) => MainPage(),
+    //       ),
+    //     );
+    //   }
+    // });
     super.initState();
   }
 
@@ -65,6 +65,11 @@ class _SignUpState extends State<SignUp> {
     } catch (e) {
       print("Error: $e");
     }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => Login(),
+      ),
+    );
   }
 
   void _addCred() async {
@@ -192,18 +197,21 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          //margin: const EdgeInsets.only(right: 10, left: 10, top: 200),
+                            //margin: const EdgeInsets.only(right: 10, left: 10, top: 200),
                             height: 60,
                             //width: 40,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: avatars.length,
                                 itemBuilder: (context, index) {
-                                  return  InkWell(
+                                  return InkWell(
                                     onTap: () {
                                       _avatar = avatars[index];
                                     },
-                                    child: Image.asset(avatars[index].toString(), height: 60, width: 60),
+                                    child: Image.asset(
+                                        avatars[index].toString(),
+                                        height: 60,
+                                        width: 60),
                                   );
                                 })),
                       ),
