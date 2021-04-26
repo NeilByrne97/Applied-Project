@@ -34,23 +34,16 @@ class _EmailMainPage extends State<EmailMainPage> {
 
   String firstName;
   String lastName;
-  String _fullName = "";
+  String fullName = "";
+  String avatar = "";
 
-  String get fullName => _fullName;
-
-  set fullName(String value) {
-    var value = getCollection();
-    _fullName = value;
+  getFullName(fullName) {
+    this.fullName = fullName;
   }
 
-  // set fullName(String value) {
-  //   var value = getCollection();
-  //   _fullName = value;
-  // }
-  //
-  // getFullName(fullName) {
-  //   this.fullName = fullName;
-  // }
+  getAvatar(avatar) {
+    this.avatar = avatar;
+  }
 
   final Map<String, IconData> myIconCollection = {
     'home': Icons.home,
@@ -60,9 +53,8 @@ class _EmailMainPage extends State<EmailMainPage> {
     'anchor': Icons.anchor_outlined,
   };
 
-  String getCollection() {
+  void getCollection() {
     _getUID();
-    var value;
     usersCollection
         .doc(uid)
         .collection('Credentials')
@@ -72,14 +64,16 @@ class _EmailMainPage extends State<EmailMainPage> {
         print(documentSnapshot.data().toString());
         firstName = documentSnapshot['firstName'];
         lastName = documentSnapshot['lastName'];
-        var value = firstName + " " + lastName;
-        //getFullName(fullName);
+        avatar = documentSnapshot['avatar'];
+
+        fullName = firstName + " " + lastName;
+        getFullName(fullName);
+
+        getAvatar(avatar);
         //print("full name " + fullName);
         //print("YOOOO");
-        //return fullName;
       });
     });
-    return value;
   }
 
   void _getUID() async {
@@ -181,8 +175,10 @@ class _EmailMainPage extends State<EmailMainPage> {
             ListTile(
               title: Text(fullName),
             ),
-              Icon(Icons.home
-              ),
+            CircleAvatar(
+              child: Image.asset(avatar),
+              radius: 60.0,
+            ),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
