@@ -24,7 +24,7 @@ class _SignUpState extends State<SignUp> {
   String _password;
   String _firstName;
   String _lastName;
-  String _icon;
+  String _avatar;
 
   String uid;
   CollectionReference usersCollection =
@@ -33,13 +33,13 @@ class _SignUpState extends State<SignUp> {
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  final Map<String, IconData> myIconCollection = {
-    'home': Icons.home,
-    'android': Icons.android,
-    'circle': Icons.account_circle_outlined,
-    'face': Icons.face_outlined,
-    'anchor': Icons.anchor_outlined,
-  };
+  final List<String> avatars = [
+    'assets/Banana.png',
+    'assets/Batman.png',
+    'assets/Default.png',
+    'assets/Spider.png',
+    'assets/Tree.png'
+  ];
 
   void initState() {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
@@ -79,7 +79,7 @@ class _SignUpState extends State<SignUp> {
           .set({
         'firstName': _firstName,
         'lastName': _lastName,
-        'icon': _icon,
+        'avatar': _avatar,
       });
     } catch (e) {
       print(e);
@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
-                  "Signup Here",
+                  "Sign Up Here",
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -189,7 +189,24 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                       ),
-                      Image(image: AssetImage('assets/Batman.png')),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          //margin: const EdgeInsets.only(right: 10, left: 10, top: 200),
+                            height: 60,
+                            //width: 40,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: avatars.length,
+                                itemBuilder: (context, index) {
+                                  return  InkWell(
+                                    onTap: () {
+                                      _avatar = avatars[index];
+                                    },
+                                    child: Image.asset(avatars[index].toString(), height: 60, width: 60),
+                                  );
+                                })),
+                      ),
                       RaisedButton(
                         onPressed: _createUser,
                         color: Colors.green,
