@@ -120,14 +120,17 @@ class _MainPage extends State<MainPage> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text(snapshot.data.displayName,
-                        //     style: TextStyle(fontSize: 35.0)),
-                        // SizedBox(height: 100.0),
-                        // CircleAvatar(
-                        //   backgroundImage: NetworkImage(snapshot.data.photoURL
-                        //       .replaceFirst('s96', 's400')),
-                        //   radius: 60.0,
-                        // ),
+                        Text(snapshot.data.displayName,
+                            style: TextStyle(fontSize: 35.0)),
+                        SizedBox(height: 100.0),
+                        CircleAvatar(
+                          backgroundImage: (snapshot.data.photoURL == null) ?
+
+                          NetworkImage("https://www.fillmurray.com/300/300") :
+                          NetworkImage(snapshot.data.photoURL
+                              .replaceFirst('s96', 's400')),
+                          radius: 60.0,
+                        ),
                         SizedBox(
                           height: 100.0,
                         ),
@@ -136,11 +139,6 @@ class _MainPage extends State<MainPage> {
                             onPressed: () => Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                                     builder: (context) => authBloc.logout()))),
-                        MaterialButton(
-                            onPressed: () async {
-                              await FirebaseAuth.instance.signOut();
-                            },
-                            child: Text("Sign out")),
                       ],
                     );
                   }),

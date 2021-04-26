@@ -29,9 +29,65 @@ class _EmailMainPage extends State<EmailMainPage> {
   StreamSubscription<User> loginStateSubScription;
   BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 
-
   String _address = "...";
   String _name = "...";
+
+  String firstName;
+  String lastName;
+  String _fullName = "";
+
+  String get fullName => _fullName;
+
+  set fullName(String value) {
+    var value = getCollection();
+    _fullName = value;
+  }
+
+  // set fullName(String value) {
+  //   var value = getCollection();
+  //   _fullName = value;
+  // }
+  //
+  // getFullName(fullName) {
+  //   this.fullName = fullName;
+  // }
+
+  final Map<String, IconData> myIconCollection = {
+    'home': Icons.home,
+    'android': Icons.android,
+    'circle': Icons.account_circle_outlined,
+    'face': Icons.face_outlined,
+    'anchor': Icons.anchor_outlined,
+  };
+
+  String getCollection() {
+    _getUID();
+    var value;
+    usersCollection
+        .doc(uid)
+        .collection('Credentials')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
+        print(documentSnapshot.data().toString());
+        firstName = documentSnapshot['firstName'];
+        lastName = documentSnapshot['lastName'];
+        var value = firstName + " " + lastName;
+        //getFullName(fullName);
+        //print("full name " + fullName);
+        //print("YOOOO");
+        //return fullName;
+      });
+    });
+    return value;
+  }
+
+  void _getUID() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    this.uid = uid;
+    print("Current user is " + uid);
+  }
 
   Timer _discoverableTimeoutTimer;
   int _discoverableTimeoutSecondsLeft = 0;
@@ -40,18 +96,22 @@ class _EmailMainPage extends State<EmailMainPage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String uid;
   CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
+
   @override
   void initState() {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     loginStateSubScription = authBloc.currentUser.listen((fbUser) {
       if (fbUser == null) {
+        print("FB user is ");
+        print(fbUser);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => Login(),
           ),
         );
       }
+      var firstName = getCollection();
     });
     super.initState();
 
@@ -106,11 +166,10 @@ class _EmailMainPage extends State<EmailMainPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    getCollection();
     final authBloc = Provider.of<AuthBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(' Covid-19 Contact Tracing  '),
@@ -120,8 +179,10 @@ class _EmailMainPage extends State<EmailMainPage> {
           children: <Widget>[
             Divider(),
             ListTile(
-              title: Text(_name),
+              title: Text(fullName),
             ),
+              Icon(Icons.home
+              ),
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
@@ -147,7 +208,7 @@ class _EmailMainPage extends State<EmailMainPage> {
                 child: const Text('Connect and Send Contact Information'),
                 onPressed: () async {
                   final BluetoothDevice selectedDevice =
-                  await Navigator.of(context).push(
+                      await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
                         return SelectBondedDevicePage(checkAvailability: false);
@@ -163,12 +224,7 @@ class _EmailMainPage extends State<EmailMainPage> {
                 },
               ),
             ),
-            ListTile(
-                title: RaisedButton(
-                    child: const Text('Placccccccces'),
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => PlacesDetails())))),
+            ListTile(title: RaisedButton(child: const Text('Placccccccces'))),
             Divider(),
           ],
         ),
@@ -185,20 +241,4 @@ class _EmailMainPage extends State<EmailMainPage> {
       ),
     );
   }
-
-  void getCollection() {
-    _getUID();
-    usersCollection.doc(uid).collection('Credentials').get().then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
-        print(documentSnapshot.data().toString());
-      });
-    });
-  }
-
-  void _getUID() async {
-    final User user = auth.currentUser;
-    final uid = user.uid;
-    this.uid = uid;
-  }
-
 }

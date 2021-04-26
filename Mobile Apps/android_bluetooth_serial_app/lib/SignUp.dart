@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:icon_picker/icon_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'AuthBloc.dart';
@@ -23,13 +24,22 @@ class _SignUpState extends State<SignUp> {
   String _password;
   String _firstName;
   String _lastName;
+  String _icon;
 
   String uid;
   CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  final Map<String, IconData> myIconCollection = {
+    'home': Icons.home,
+    'android': Icons.android,
+    'circle': Icons.account_circle_outlined,
+    'face': Icons.face_outlined,
+    'anchor': Icons.anchor_outlined,
+  };
 
   void initState() {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
@@ -44,11 +54,11 @@ class _SignUpState extends State<SignUp> {
     });
     super.initState();
   }
+
   Future<void> _createUser() async {
     try {
-      UserCredential userCredential =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email, password: _password);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _email, password: _password);
       _addCred();
     } on FirebaseAuthException catch (e) {
       print("Error: $e");
@@ -62,14 +72,20 @@ class _SignUpState extends State<SignUp> {
     final uid = user.uid;
     String docName = _lastName + " " + _firstName;
     try {
-      await usersCollection.doc(uid).collection('Credentials').doc(docName).set({
+      await usersCollection
+          .doc(uid)
+          .collection('Credentials')
+          .doc(docName)
+          .set({
         'firstName': _firstName,
         'lastName': _lastName,
+        'icon': _icon,
       });
     } catch (e) {
       print(e);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
@@ -107,7 +123,8 @@ class _SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(), labelText: "First Name"),
+                              border: OutlineInputBorder(),
+                              labelText: "First Name"),
                           validator: (_val) {
                             if (_val.isEmpty) {
                               return "Can't be empty";
@@ -124,7 +141,8 @@ class _SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(), labelText: "Last Name"),
+                              border: OutlineInputBorder(),
+                              labelText: "Last Name"),
                           validator: (_val) {
                             if (_val.isEmpty) {
                               return "Can't be empty";
@@ -171,6 +189,7 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                       ),
+                      Image(image: AssetImage('assets/Batman.png')),
                       RaisedButton(
                         onPressed: _createUser,
                         color: Colors.green,
@@ -183,16 +202,16 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
               ),
-              SignInButton(
-                  Buttons.Google, onPressed: () => authBloc.loginGoogle()),
+              SignInButton(Buttons.Google,
+                  onPressed: () => authBloc.loginGoogle()),
               SizedBox(
                 height: 10.0,
               ),
               InkWell(
                 onTap: () {
                   // send to login screen
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Login()));
                 },
                 child: Text(
                   "Login Here",
