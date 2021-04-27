@@ -35,8 +35,8 @@ emailRouter.route('/')
   var mailOptions = {
     from: 'neilbyrne999@gmail.com',//replace with your email
     to: 'neilbyrne19@gmail.com',//replace with your email
-    subject: `NodeMail Testing`,
-    html:`Node Mail Testing Sucessful`
+    subject: `Covid-19 Outbreak`,
+    text:`There has been as Covid-19 outbreak at _______`
   };
   
   /* Here comes the important part, sendMail is the method which actually sends email, it takes mail options and

@@ -45,7 +45,7 @@ export class ContactsComponent implements OnInit {
   now = new Date(); 
 
   sendMail(){
-    alert("jjj");
+    alert("Email Sent!");
     let emailr  = this.nodeMailerForm.value.emailr;
     let reqObj = {
       emailr:emailr

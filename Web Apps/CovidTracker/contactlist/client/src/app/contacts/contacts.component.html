@@ -19,9 +19,9 @@
         </div>
         <input type = "submit" class = "btn btn btn-success" value = "Add">
     </form>
-    <div class="md-form">
+    <!-- <div class="md-form">
         <input type="search" [(ngModel)]="searchText" placeholder="Search text">
-      </div>
+      </div> -->
 
       
       <mat-form-field appearance="fill">
@@ -39,8 +39,6 @@
         <p>{{events}}</p>
       </div> -->
       
-
-
 
 <div style="padding-left: 5%;padding-right: 5%" >
     <table>
@@ -67,14 +65,15 @@
                 <td>{{contact.timestamp | date:'MM/dd/yyyy' }}</td>
                 <td>
                     <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
-                    
+                    <input type= "button" (click) = "sendMail()" value = "Email" class = "btn btn-info">
+
                </td> 
              </tr>
         </table>
 
         
     </div>
-    <div class="form-container">
+    <!-- <div class="form-container">
         <form [formGroup]="nodeMailerForm">
           <mat-form-field appearance="fill">
             <mat-label>Enter the email id you wish to send mail to:</mat-label>
@@ -83,6 +82,6 @@
           <br>
        <button  mat-raised-button color="accent" type="submit" (click)="sendMail()">Click Me</button>
       </form>
-      </div>
+      </div> -->
 </div> 
 
