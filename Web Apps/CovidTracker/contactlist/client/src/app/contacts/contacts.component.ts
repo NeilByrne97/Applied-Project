@@ -3,8 +3,9 @@ import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 import { ContactService} from '../contact.service';
 import { Contact} from '../contact';
 import {EmailService} from '../services/email.service'
-import {DatepickerOverviewExample} from '../services/datepicker'
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { TestBed } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-contacts',
@@ -20,12 +21,25 @@ export class ContactsComponent implements OnInit {
   last_name: string;
   phone: string;
   email: string;
-  timestamp: Date; 
+  timestamp:Date; 
+
+  events: string;
+  test: string; 
+
+  addEvent(event: MatDatepickerInputEvent<Date>) {
+    var test1 = `${event.value}`;
+    var test  = new Date (test1.toString()).toDateString(); 
+
+    this.events = test
+    console.log(test)
+    console.log(String(test))
+  }
 
 
-  constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService,private dateService:DatepickerOverviewExample) { }
+  constructor(private contactService: ContactService,private formBuilder:FormBuilder,private emailService:EmailService) { }
 
   searchText: string; 
+
   title = 'nodeMailerApp';
   nodeMailerForm :FormGroup;
   now = new Date(); 
@@ -46,7 +60,7 @@ export class ContactsComponent implements OnInit {
       last_name: this.last_name,
       phone: this.phone,
       email: this.email,
-      timestamp: this.now.toUTCString()
+      timestamp: this.now.toDateString()
     }
     this.contactService.addContact(newContact)
     .subscribe(contact =>{
@@ -89,5 +103,6 @@ export class ContactsComponent implements OnInit {
     this.contactService.getContacts().subscribe( contacts =>this.contacts = contacts);
     this.nodeMailerForm = this.formBuilder.group({emailr:[null,[Validators.required]]})
   }
+ 
 
 }

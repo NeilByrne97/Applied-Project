@@ -7,8 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:google_maps_webservice/places.dart';
-
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'MainPage.dart';
 
 class ChatPage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
-  String firstName, lastName, phoneNumber, email;
+  String firstName, lastName, phoneNumber, email, url;
 
   static final clientID = 0;
   BluetoothConnection connection;
@@ -48,6 +49,11 @@ class _ChatPage extends State<ChatPage> {
   getEmail(email) {
     this.email = email;
   }
+
+  getUrl(url) {
+    this.url = url;
+  }
+
 
   var firstNameField = TextEditingController();
   var lastNameField = TextEditingController();
@@ -255,10 +261,11 @@ class _ChatPage extends State<ChatPage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    _getPlaceID();
+                    //_getPlaceID();
+                    _getMenuURL();
                   },
                   child: Icon(
-                    Icons.map_rounded, // add custom icons also
+                    Icons.file_download, // add custom icons also
                   ),
                 )),
           ]),
@@ -479,12 +486,21 @@ class _ChatPage extends State<ChatPage> {
         }
       }
     }
-    String espPlaceID = "";
+    String espMessage = "";
     // Create message if there is new line character
     String dataString = String.fromCharCodes(buffer);
-    espPlaceID += dataString;
-    print("Message is " + espPlaceID);
-    _addPlaceID(espPlaceID);
+    espMessage += dataString;
+    print("Message is " + espMessage);
+
+    if(espMessage[0] == '#'){
+      print("Message is url");
+      url = espMessage;
+    }else if(espMessage[0] == '@'){
+      print("Message is placeID");
+      _addPlaceID(espMessage);
+    }
+
+
     int index = buffer.indexOf(13);
     if (~index != 0) {
       setState(() {
@@ -642,6 +658,42 @@ class _ChatPage extends State<ChatPage> {
     );
   }
 
+  Future<void> _urlAlert() async {
+    _create();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Menu Viewer'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Menu URL received!'),
+                Text('Open link with Web View?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => WebView(url: getUrl(url)))); // Close dialog box
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _getPlaceID() async {
     return showDialog<void>(
       context: context,
@@ -675,4 +727,59 @@ class _ChatPage extends State<ChatPage> {
       },
     );
   }
+
+  Future<void> _getMenuURL() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Food Menu'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Would you like to receive the url?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                _sendMessage("url");
+                Navigator.of(context).pop(); // Close dialog box
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog box
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
+
+class WebView extends StatefulWidget {
+  String url;
+  WebView({this.url});
+
+  @override
+  _WebViewState createState() => _WebViewState();
+}
+
+class _WebViewState extends State<WebView> {
+  @override
+  Widget build(BuildContext context) {
+    print("URl" + widget.url);
+    return WebviewScaffold(
+        withZoom: true,
+        url: widget.url);
+  }
+}
+

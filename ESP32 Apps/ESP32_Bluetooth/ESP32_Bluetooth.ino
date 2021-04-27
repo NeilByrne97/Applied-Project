@@ -95,6 +95,9 @@ void convertString(String infoString){
   }
       if(firstName == "placeID"){
        SerialBT.print("ChIJK3fd2XoxWUgRBB22NLqO2Ss");
+    } 
+    else if(firstName == "url"){
+       SerialBT.print("https://www.frontdoorpub.com/wp-content/uploads/2020/12/The-Front-Door-Pub-Evening-Menu.pdf");
     }
     
       Serial.println("First name is " + firstName);

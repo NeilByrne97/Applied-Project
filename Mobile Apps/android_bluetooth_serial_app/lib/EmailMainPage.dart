@@ -190,7 +190,6 @@ class _EmailMainPage extends State<EmailMainPage> {
               },
             ),
             Divider(),
-            ListTile(title: const Text('Bluetooth devices')),
             ListTile(
               title: RaisedButton(
                 child: const Text('Connect and Send Contact Information'),
@@ -212,7 +211,7 @@ class _EmailMainPage extends State<EmailMainPage> {
                 },
               ),
             ),
-            ListTile(title: RaisedButton(child: const Text('Placccccccces'))),
+            ListTile(title: RaisedButton(child: const Text('Location Details'))),
             Divider(),
           ],
         ),
