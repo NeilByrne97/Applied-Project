@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:icon_picker/icon_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'AuthBloc.dart';
 import 'Login.dart';
+import 'MainPage.dart';
 
 class SignUp extends StatefulWidget {
   @override
