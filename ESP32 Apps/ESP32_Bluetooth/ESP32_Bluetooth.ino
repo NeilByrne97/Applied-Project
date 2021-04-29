@@ -48,7 +48,7 @@ void setup() {
   Serial.println("HTTP server started");
 
   // Print BLUETOOTH
-  SerialBT.begin("ESP32"); //Bluetooth device name
+  SerialBT.begin("Restaurant (Contact Tracer)"); //Bluetooth device name
   Serial.println("Bluetooth started");
 
   TelnetStream.begin();

@@ -185,7 +185,7 @@ class _MainPage extends State<MainPage> {
             ),
             ListTile(
                 title: RaisedButton(
-                    child: const Text('Places'),
+                    child: const Text('Place\'s Contact information'),
                     onPressed: () => Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                             builder: (context) => PlacesDetails())))),

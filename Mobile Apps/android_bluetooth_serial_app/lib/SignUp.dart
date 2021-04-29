@@ -38,7 +38,15 @@ class _SignUpState extends State<SignUp> {
     'assets/Batman.png',
     'assets/Default.png',
     'assets/Spider.png',
-    'assets/Tree.png'
+    'assets/Tree.png',
+    'assets/Bear.png',
+    'assets/Boy.png',
+    'assets/Cactus.png',
+    'assets/Chaplin.png',
+    'assets/Coffee.png',
+    'assets/Monroe.png',
+    'assets/Scientist.png',
+    'assets/Sheep.png'
   ];
 
   void initState() {
@@ -249,3 +257,4 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
+

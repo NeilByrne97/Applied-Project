@@ -62,7 +62,8 @@ class _EmailMainPage extends State<EmailMainPage> {
         getFullName(fullName);
 
         getAvatar(avatar);
-        //print("full name " + fullName);
+        print("full name " + fullName);
+        print("avatar " + avatar);
         //print("YOOOO");
       });
     });
@@ -86,6 +87,7 @@ class _EmailMainPage extends State<EmailMainPage> {
 
   @override
   void initState() {
+    getCollection();
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     loginStateSubScription = authBloc.currentUser.listen((fbUser) {
       if (fbUser == null) {
@@ -97,7 +99,6 @@ class _EmailMainPage extends State<EmailMainPage> {
           ),
         );
       }
-      var firstName = getCollection();
     });
     super.initState();
 
@@ -164,13 +165,29 @@ class _EmailMainPage extends State<EmailMainPage> {
         child: ListView(
           children: <Widget>[
             Divider(),
-            ListTile(
-              title: Text(fullName),
-            ),
-            CircleAvatar(
-              child: Image.asset(avatar),
-              radius: 60.0,
-            ),
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(fullName, style: TextStyle(fontSize: 35.0)),
+              SizedBox(height: 100.0),
+              CircleAvatar(
+                child: Image.asset(avatar),
+                radius: 60.0,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              RaisedButton(
+                // passing an additional context parameter to show dialog boxs
+                onPressed: () => Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(
+                    builder: (context) => authBloc.logout())),
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text(
+                  "Logout",
+                ),
+              ),
+            ]),
+
             SwitchListTile(
               title: const Text('Enable Bluetooth'),
               value: _bluetoothState.isEnabled,
@@ -212,7 +229,10 @@ class _EmailMainPage extends State<EmailMainPage> {
                 },
               ),
             ),
-            ListTile(title: RaisedButton(child: const Text('Placccccccces'))),
+            ListTile(
+                title: RaisedButton(
+                    child: const Text('Place\'s Contact information'),
+                    onPressed: getCollection)),
             Divider(),
           ],
         ),

@@ -258,7 +258,7 @@ class _ChatPage extends State<ChatPage> {
                     _getPlaceID();
                   },
                   child: Icon(
-                    Icons.map_rounded, // add custom icons also
+                    Icons.file_download, // add custom icons also
                   ),
                 )),
           ]),
