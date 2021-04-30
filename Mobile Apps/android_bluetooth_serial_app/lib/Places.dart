@@ -193,8 +193,6 @@ class CallsAndMessagesService {
   void call(String number) => launch("tel:$number");
 
   void sendSms(String number) => launch("sms:$number");
-
-  void sendEmail(String email) => launch("mailto:$email");
 }
 
 GetIt locator = GetIt();

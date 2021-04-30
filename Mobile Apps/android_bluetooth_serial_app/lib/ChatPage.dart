@@ -86,8 +86,6 @@ class _ChatPage extends State<ChatPage> {
   void _addPlaceID(String placeID) async {
     final places =
     new GoogleMapsPlaces(apiKey: "AIzaSyAz6TJpPOpuhahblOebTaiCmtXHcipwxjc");
-    //String place = "ChIJ_aKF2fqWW0gRDLLSSGNL_hc";
-
     PlacesDetailsResponse response = await places.getDetailsByPlaceId(placeID);
 
     String name = response.result.name;
