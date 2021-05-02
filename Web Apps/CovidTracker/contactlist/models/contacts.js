@@ -20,9 +20,7 @@ const ContactSchema = mongoose.Schema({
     },
     timestamp : {
         type: Date, default: Date.now
-
     }
-
 });
 
 const Contact = module.exports = mongoose.model('Contact', ContactSchema);

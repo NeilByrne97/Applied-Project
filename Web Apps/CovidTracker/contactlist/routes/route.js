@@ -19,7 +19,6 @@ router.post('/contact', (req, res, next)=>{
         last_name: req.body.last_name,
         phone: req.body.phone,
         email: req.body.email,
-
     });
     newContact.save((err, contact)=>{
         if(err){
@@ -38,8 +37,7 @@ router.delete('/contact/:id',(req, res, next)=>{
         }
         else{
             res.json(result);
-        }
-       
+        } 
     });
 });
 
