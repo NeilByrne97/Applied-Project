@@ -44,14 +44,18 @@ export class ContactsComponent implements OnInit {
   nodeMailerForm :FormGroup;
   now = new Date(); 
 
-  sendMail(){
+  sendMail(email:any){
+    debugger
     alert("Email Sent!");
     let emailr  = this.nodeMailerForm.value.emailr;
+    console.log(email)
     let reqObj = {
-      emailr:emailr
+      emailr:emailr,
+      email:email
     }
     this.emailService.sendMessage(reqObj).subscribe(data=>{
       console.log(data);
+      
     })
   }
   addContact(){

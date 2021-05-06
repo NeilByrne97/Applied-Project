@@ -12,7 +12,7 @@ emailRouter.route('/')
 
 // route which captures form details and sends it to your personal mail
 .post(cors.cors,(req,res,next)=>{
-  
+
   console.log("oooo",req.body.email)
   /*Transport service is used by node mailer to send emails, it takes service and auth object as parameters.
     here we are using gmail as our service 
@@ -34,7 +34,7 @@ emailRouter.route('/')
   */
   var mailOptions = {
     from: 'neilbyrne999@gmail.com',//replace with your email
-    to: 'neilbyrne19@gmail.com',//replace with your email
+    to: req.body.email,//replace with your email
     subject: `Covid-19 Outbreak`,
     text:`There has been as Covid-19 outbreak at _______`
   };
