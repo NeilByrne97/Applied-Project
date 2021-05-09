@@ -13,7 +13,7 @@ emailRouter.route('/')
 // route which captures form details and sends it to your personal mail
 .post(cors.cors,(req,res,next)=>{
 
-  console.log("oooo",req.body.email)
+  console.log("Email Sent!",req.body.email)
   /*Transport service is used by node mailer to send emails, it takes service and auth object as parameters.
     here we are using gmail as our service 
     In Auth object , we specify our email and password
@@ -49,8 +49,8 @@ emailRouter.route('/')
       res.send('error') // if error occurs send error as response to client
     } else {
       console.log('Email sent: ' + info.response);
-      res.send('Sent Successfully')//if mail is sent successfully send Sent successfully as response
-    }
+      res.send('Sent Successfully')//if mail is sent successfully                           
+    }                             //send Sent successfully as response
   });
 })
 

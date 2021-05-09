@@ -45,7 +45,7 @@ export class ContactsComponent implements OnInit {
   now = new Date(); 
 
   sendMail(email:any){
-    debugger
+    //debugger
     alert("Email Sent!");
     let emailr  = this.nodeMailerForm.value.emailr;
     console.log(email)
@@ -55,9 +55,10 @@ export class ContactsComponent implements OnInit {
     }
     this.emailService.sendMessage(reqObj).subscribe(data=>{
       console.log(data);
-      
+     
     })
   }
+
   addContact(){
     const newContact ={
       first_name: this.first_name,
@@ -75,6 +76,7 @@ export class ContactsComponent implements OnInit {
         this.contacts = contacts);
     });
   }
+  
   deleteContact(id:any){
     var contacts = this.contacts;
     this.contactService.deleteContact(id)

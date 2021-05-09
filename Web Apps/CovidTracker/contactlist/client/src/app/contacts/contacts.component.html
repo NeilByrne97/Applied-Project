@@ -36,13 +36,7 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
-      <!-- <div class="example-events">
-        <div *ngFor="let e of events">{{e}}</div>
-      </div>
-      <div class="example-events">
-        <p>{{events}}</p>
-      </div> -->
-      
+ 
 
 <div style="padding-left: 5%;padding-right: 5%" >
     <table>
@@ -66,7 +60,7 @@
                 <td>{{contact.last_name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.email}}</td>
-                <td>{{contact.timestamp | date:'MM/dd/yyyy' }}</td>
+                <td>{{contact.timestamp | date:'dd/MM/yyyy' }}</td>
                 <td>
                     <input type= "button" (click) = "deleteContact(contact._id)" value = "Delete" class = "btn btn-danger">
                     <input type= "button" (click) = "sendMail(contact.email)" value = "Email" class = "btn btn-info">
