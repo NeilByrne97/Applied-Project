@@ -3,12 +3,12 @@ Covid-19 Contact Tracing System Using MEAN Stack,
 Flutter Firebase Applications and NodeMCU Hardware
 
 # Project Description
-A Covid-19 Contact Tracing System to be used in the service industry andother businesses to track contact information of people in the case of a po-tential Coronavirus outbreak in the business establishment.The system is broken down into three projects. An Android Flutter Ap-plication, connected to a Firebase Firestore for CRUD interactions of theuser’s contact information and Bluetooth capabilities to send the informa-tion. A NodeMCU ESP-32 module to retrieve the information via Bluetoothand parse it through HTTP requests. A MEAN stack web application tohandle this contact information and perform CRUD operations, various fil-tering/sorting and serve as an email client.
+A Covid-19 Contact Tracing System to be used in the service industry and other businesses to track contact information of people in the case of a potential Coronavirus outbreak in the business establishment.The system is broken down into three projects. An Android Flutter Application, connected to a Firebase Firestore for CRUD interactions of the user’s contact information and Bluetooth capabilities to send the information. A NodeMCU ESP-32 module to retrieve the information via Bluetooth and parse it through HTTP requests. A MEAN stack web application to handle this contact information and perform CRUD operations, various filtering/sorting and serve as an email client.
 
 
 # Repository Contents
 This repository is for the purpose of the Applied Project and Minor Dissertation module GMIT. It contains:
-* The full source code of the applicaiton and any relevant resoures.
+* The full source code of the application and any relevant resources.
 * Instructions for compiling, deploying and running each part of the project.
 * The dissertation in PFD and bibtex format.
 * A video presentation of the architecture and the working application.
